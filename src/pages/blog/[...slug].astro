@@ -20,10 +20,11 @@ if (entry === undefined) {
     return Astro.redirect("/404");
 }
 
-const { id, title, tag, date } = entry.data;
-
 // 4. （可选）在模板中将条目呈现为 HTML
 const { Content } = await entry.render();
+
+const { id, title, tag, date } = entry.data;
+
 ---
 
 <Layout title={title}>
@@ -45,9 +46,7 @@ const { Content } = await entry.render();
         <div class="body">
             <section class="py-8">
                 <div class="w-full">
-                    <article
-                        class="prose text-white prose-headings:text-white prose-a:text-white"
-                    >
+                    <article class="prose text-white prose-headings:text-white prose-a:text-white">
                         <Content />
                     </article>
                 </div>
@@ -66,7 +65,8 @@ const { Content } = await entry.render();
                         data-theme="dark"
                         data-lang="zh-CN"
                         crossorigin="anonymous"
-                        async></script>
+                        async>
+                    </script>
                 </div>
             </section>
         </div>

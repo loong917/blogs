@@ -1,27 +1,46 @@
 ---
-import Layout from "../layouts/Layout.astro";
-import Header from "../components/Header.astro";
-import Footer from "../components/Footer.astro";
-import Card from "../components/Card.astro";
+import Layout from "../../layouts/Layout.astro";
+import Header from "../../components/Header.astro";
+import Pagination from "../../components/Pagination.astro";
+import Footer from "../../components/Footer.astro";
+import Card from "../../components/Card.astro";
+import { getCollection } from "astro:content";
+import type { PaginateFunction } from "astro";
 
-const blogs = await Astro.glob("../content/blogs/*.md");
+// 页面大小
+export const PAGE_SIZE = 6;
+
+export async function getStaticPaths({ paginate }: { paginate: PaginateFunction }) {
+    const blogs = await getCollection("blogs");
+    const sortedPosts = blogs.sort((a, b) => b.data.id - a.data.id);
+    return paginate(sortedPosts, {
+        pageSize: PAGE_SIZE,
+    });
+}
+
+const { page } = Astro.props;
+
 ---
 
 <Layout title="loong博客">
     <main>
         <Header title="loong博客" />
+        <!--
+        <h1>Welcome to <span class="text-gradient">Astro</span></h1>
+        -->
         <ul role="list" class="link-card-grid">
             {
-                blogs.map((blog) => (
+                page.data.map((blog) => (
                     <Card
-                        id={blog.frontmatter.id}
-                        title={blog.frontmatter.title}
-                        date={blog.frontmatter.date}
-                        tag={blog.frontmatter.tag}
-                        mediaTransitionName={`media-image-${blog.frontmatter.id}`}/>
+                        id={blog.data.id}
+                        title={blog.data.title}
+                        date={blog.data.date}
+                        tag={blog.data.tag}
+                        mediaTransitionName={`media-image-${blog.data.id}`}/>
                 ))
             }
         </ul>
+        <Pagination page={page} />
         <Footer />
     </main>
 </Layout>
@@ -49,7 +68,13 @@ const blogs = await Astro.glob("../content/blogs/*.md");
         text-align: center;
         margin-bottom: 1em;
     }
-    
+    .text-gradient {
+        background-image: var(--accent-gradient);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-size: 400%;
+        background-position: 0%;
+    }
     .instructions {
         margin-bottom: 2rem;
         border: 1px solid rgba(var(--accent-light), 25%);
