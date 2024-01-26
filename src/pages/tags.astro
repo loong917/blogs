@@ -1,27 +1,20 @@
 ---
-import Layout from "../../layouts/Layout.astro";
-import Header from "../../components/Header.astro";
-import Pagination from "../../components/Pagination.astro";
-import Footer from "../../components/Footer.astro";
-import Card from "../../components/Card.astro";
+import Layout from "../layouts/Layout.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
 import { getCollection } from "astro:content";
-import type { PaginateFunction } from "astro";
 
-// 页面大小
-export const PAGE_SIZE = 6;
+const blogs = await getCollection("blogs");
+const uniqueTags = [...new Set(blogs.map((blog) => blog.data.tags).flat())];
+let groupBlogs = uniqueTags.map((tag) => {
+    const filterBlogs = blogs.filter((blog) => blog.data.tags.includes(tag));
+    return {
+        tag: tag,
+        blogs: filterBlogs,
+    };
+});
 
-export async function getStaticPaths({ paginate } : { paginate: PaginateFunction }) {
-    const blogs = await getCollection("blogs");
-    const sortedPosts = blogs.sort((a, b) => b.data.id - a.data.id);
-    return paginate(sortedPosts, {
-        pageSize: PAGE_SIZE,
-    });
-}
-
-const { page } = Astro.props;
-
-console.log(page);
-
+console.log(groupBlogs);
 ---
 
 <Layout title="loong博客">
@@ -29,19 +22,13 @@ console.log(page);
         <Header title="loong博客" />
         <ul role="list" class="link-card-grid">
             {
-                page.data.map((blog) => (
-                    <Card
-                        id={blog.data.id}
-                        title={blog.data.title}
-                        date={blog.data.date}
-                        image={blog.data.image}
-                        tags={blog.data.tags}
-                        mediaTransitionName={`media-image-${blog.data.id}`}
-                    />
+                groupBlogs.map((blog) => (
+                    <li class="media-item tag text-white">
+                        <a href={`/tags/${blog.tag}`}>{blog.tag} ({ blog.blogs.length })</a>
+                    </li>
                 ))
             }
         </ul>
-        <Pagination page={page} />
         <Footer />
     </main>
 </Layout>

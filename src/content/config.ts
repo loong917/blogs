@@ -7,7 +7,8 @@ const blogCollection = defineCollection({
         id: z.number(),
         title: z.string(),
         date: z.string(),
-        tag: z.string(),
+        image: z.string(),
+        tags: z.array(z.string()),
     }),
 });
 // 3. 导出一个 `collections` 对象来注册集合

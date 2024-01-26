@@ -5,7 +5,8 @@ interface Props {
     id: number;
     title: string;
     date: string;
-    tag: string;
+    tags: Array<string>;
+    image: string;
     mediaTransitionName?: string;
     mediaTransitionAnimate?: TransitionAnimationValue;
 }
@@ -14,7 +15,8 @@ const {
     id,
     title,
     date,
-    tag,
+    image,
+    tags,
     mediaTransitionName = "none",
     mediaTransitionAnimate = "fade",
 } = Astro.props;
@@ -25,11 +27,7 @@ const {
     transition:name={mediaTransitionName}
     transition:animate={mediaTransitionAnimate}
 >
-    <a
-        class="link"
-        style={`--bgURL: url('/${tag}.svg');`}
-        href={`/blog/${id}`}
-    >
+    <a class="link" style={`--bgURL: url('/${image}');`} href={`/blog/${id}`}>
         <h3 class="title">
             {title}
         </h3>

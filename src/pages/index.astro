@@ -5,6 +5,8 @@ import Footer from "../components/Footer.astro";
 import Card from "../components/Card.astro";
 
 const blogs = await Astro.glob("../content/blogs/*.md");
+// 最新文章
+const sortedBlogs = blogs.sort((a, b) => b.frontmatter.id - a.frontmatter.id).slice(0, 10);
 ---
 
 <Layout title="loong博客">
@@ -12,13 +14,15 @@ const blogs = await Astro.glob("../content/blogs/*.md");
         <Header title="loong博客" />
         <ul role="list" class="link-card-grid">
             {
-                blogs.map((blog) => (
+                sortedBlogs.map((blog) => (
                     <Card
                         id={blog.frontmatter.id}
                         title={blog.frontmatter.title}
                         date={blog.frontmatter.date}
-                        tag={blog.frontmatter.tag}
-                        mediaTransitionName={`media-image-${blog.frontmatter.id}`}/>
+                        image={blog.frontmatter.image}
+                        tags={blog.frontmatter.tags}
+                        mediaTransitionName={`media-image-${blog.frontmatter.id}`}
+                    />
                 ))
             }
         </ul>
@@ -49,7 +53,7 @@ const blogs = await Astro.glob("../content/blogs/*.md");
         text-align: center;
         margin-bottom: 1em;
     }
-    
+
     .instructions {
         margin-bottom: 2rem;
         border: 1px solid rgba(var(--accent-light), 25%);

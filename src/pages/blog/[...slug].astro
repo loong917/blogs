@@ -23,20 +23,19 @@ if (entry === undefined) {
 // 4. （可选）在模板中将条目呈现为 HTML
 const { Content } = await entry.render();
 
-const { id, title, tag, date } = entry.data;
-
+const { id, title, image, tags, date } = entry.data;
 ---
 
 <Layout title={title}>
     <main>
         <Header title="loong博客" />
-        <div class="media" style={`--bgURL: url('/${tag}.svg');`}>
+        <div class="media" style={`--bgURL: url('/${image}');`}>
             <h1 class="media-title" transition:name=`media-image-${id}`>
                 {title}
             </h1>
             <ul class="media-list">
                 <li class="media-item tag">
-                    <a href="/blog/category/nextjs">{tag}</a>
+                    {tags.map((tag) => <a href={`/tags/${tag}`}>{tag}</a>)}
                 </li>
                 <li class="media-item time">
                     <time>{date}</time>
@@ -46,7 +45,9 @@ const { id, title, tag, date } = entry.data;
         <div class="body">
             <section class="py-8">
                 <div class="w-full">
-                    <article class="prose text-white prose-headings:text-white prose-a:text-white">
+                    <article
+                        class="prose text-white prose-headings:text-white prose-a:text-white"
+                    >
                         <Content />
                     </article>
                 </div>
@@ -65,8 +66,8 @@ const { id, title, tag, date } = entry.data;
                         data-theme="dark"
                         data-lang="zh-CN"
                         crossorigin="anonymous"
-                        async>
-                    </script>
+                        async
+                    ></script>
                 </div>
             </section>
         </div>
@@ -141,7 +142,7 @@ const { id, title, tag, date } = entry.data;
         height: 1em;
         width: 1em;
     }
-    
+
     .body {
         border-top: 1px solid #333545;
         padding-top: 3rem;
