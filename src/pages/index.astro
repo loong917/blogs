@@ -6,7 +6,9 @@ import Card from "../components/Card.astro";
 
 const blogs = await Astro.glob("../content/blogs/*.md");
 // 最新文章
-const sortedBlogs = blogs.sort((a, b) => b.frontmatter.id - a.frontmatter.id).slice(0, 10);
+const sortedBlogs = blogs
+    .sort((a, b) => b.frontmatter.id - a.frontmatter.id)
+    .slice(0, 10);
 ---
 
 <Layout title="loong博客">
@@ -26,6 +28,13 @@ const sortedBlogs = blogs.sort((a, b) => b.frontmatter.id - a.frontmatter.id).sl
                 ))
             }
         </ul>
+        <div class="flex items-center justify-end">
+            <button
+                class="py-12 font-bold text-white uppercase align-middle transition-all rounded-lg"
+                type="button">
+                <a class="link" href='/blogs'>更多文章</a>
+            </button>
+        </div>
         <Footer />
     </main>
 </Layout>
