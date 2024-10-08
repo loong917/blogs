@@ -66,8 +66,7 @@ const { id, title, image, tags, date } = entry.data;
                         data-theme="dark"
                         data-lang="zh-CN"
                         crossorigin="anonymous"
-                        async
-                    ></script>
+                        async></script>
                 </div>
             </section>
         </div>
@@ -147,5 +146,12 @@ const { id, title, image, tags, date } = entry.data;
         border-top: 1px solid #333545;
         padding-top: 3rem;
         padding-bottom: 3rem;
+    }
+
+    .prose-headings:text-white
+        :is(
+            :where(th):not(:where([class~="not-prose"], [class~="not-prose"] *))
+        ) {
+        width: 100px;
     }
 </style>
