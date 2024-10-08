@@ -148,10 +148,10 @@ const { id, title, image, tags, date } = entry.data;
         padding-bottom: 3rem;
     }
 
-    .prose-headings\:text-white
-        :is(
-            :where(th):not(:where([class~="not-prose"], [class~="not-prose"] *))
+    .prose
+        :where(thead th):not(
+            :where([class~="not-prose"], [class~="not-prose"] *)
         ) {
-        width: 36px;
+        width: 60px;
     }
 </style>
