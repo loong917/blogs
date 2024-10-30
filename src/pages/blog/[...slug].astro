@@ -154,4 +154,11 @@ const { id, title, image, tags, date } = entry.data;
         ) {
         width: 60px;
     }
+
+    .prose
+        :where(blockquote):not(
+            :where([class~="not-prose"], [class~="not-prose"] *)
+        ) {
+        color: #ffffff;
+    }
 </style>
