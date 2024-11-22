@@ -18,7 +18,7 @@ let groupBlogs = uniqueTags.map((tag) => {
 <Layout title="loong博客">
     <main>
         <Header title="loong博客" />
-        <div class="w-full py-16">
+        <h1 class="mb-12 text-white text-2xl leading-tight font-serif italic sm:mb-16 sm:text-4xl">所有标签</h1>
         {
             groupBlogs.map((blog) => {
                 return (
@@ -38,7 +38,6 @@ let groupBlogs = uniqueTags.map((tag) => {
                 );
             })
         }
-        </div>
         <Footer />
     </main>
 </Layout>
