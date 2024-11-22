@@ -18,11 +18,12 @@ let groupBlogs = uniqueTags.map((tag) => {
 <Layout title="loong博客">
     <main>
         <Header title="loong博客" />
+        <div class="py-16">
         {
             groupBlogs.map((blog) => {
                 return (
                     <a
-                        class="mb-10 flex text-white justify-between items-start gap-8 group sm:mb-12"
+                        class="mb-10 flex text-white justify-between items-start gap-8 group"
                         href={`/tags/${blog.tag}`}
                     >
                         <div class="grow">
@@ -37,6 +38,7 @@ let groupBlogs = uniqueTags.map((tag) => {
                 );
             })
         }
+        </div>
         <Footer />
     </main>
 </Layout>
