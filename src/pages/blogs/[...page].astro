@@ -11,40 +11,41 @@ import type { PaginateFunction } from "astro";
 export const PAGE_SIZE = 9;
 
 export async function getStaticPaths({
-    paginate,
+  paginate,
 }: {
-    paginate: PaginateFunction;
+  paginate: PaginateFunction;
 }) {
-    const blogs = await getCollection("blogs");
-    const sortedPosts = blogs.sort((a, b) => b.data.id - a.data.id);
-    return paginate(sortedPosts, {
-        pageSize: PAGE_SIZE,
-    });
+  const blogs = await getCollection("blogs");
+  const sortedPosts = blogs.sort((a, b) => b.data.id - a.data.id);
+  return paginate(sortedPosts, {
+    pageSize: PAGE_SIZE,
+  });
 }
 
 const { page } = Astro.props;
 ---
 
 <Layout title="loong博客">
-    <main>
-        <Header title="loong博客" />
-        <div class="w-full">
-            <ul role="list" class="link-card-grid">
-                {
-                    page.data.map((blog) => (
-                        <Card
-                            id={blog.data.id}
-                            title={blog.data.title}
-                            date={blog.data.date}
-                            image={blog.data.image}
-                            tags={blog.data.tags}
-                            mediaTransitionName={`media-image-${blog.data.id}`}
-                        />
-                    ))
-                }
-            </ul>
-        </div>
-        <Pagination page={page} />
-        <Footer />
-    </main>
+  <main>
+    <Header title="loong博客" />
+    <div class="w-full">
+      <h1 class="text-white text-2xl">所有文章</h1>
+      <ul role="list" class="link-card-grid">
+        {
+          page.data.map((blog) => (
+            <Card
+              id={blog.data.id}
+              title={blog.data.title}
+              date={blog.data.date}
+              image={blog.data.image}
+              tags={blog.data.tags}
+              mediaTransitionName={`media-image-${blog.data.id}`}
+            />
+          ))
+        }
+      </ul>
+    </div>
+    <Pagination page={page} />
+    <Footer />
+  </main>
 </Layout>
