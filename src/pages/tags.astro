@@ -22,7 +22,7 @@ let groupBlogs = uniqueTags.map((tag) => {
             groupBlogs.map((blog) => {
                 return (
                     <a
-                        class="mb-10 flex justify-between items-start gap-8 group sm:mb-12"
+                        class="mb-10 flex text-white justify-between items-start gap-8 group sm:mb-12"
                         href={`/tags/${blog.tag}`}
                     >
                         <div class="grow">
@@ -30,7 +30,7 @@ let groupBlogs = uniqueTags.map((tag) => {
                                 {blog.tag}
                             </h2>
                             <div class="mt-1 text-sm leading-normal">
-                                {blog.blogs.length}
+                                {blog.blogs.length} 篇
                             </div>
                         </div>
                         <div class="hidden font-serif italic opacity-0 transition group-hover:opacity-100 sm:inline-flex sm:gap-1 sm:items-center sm:shrink-0">
