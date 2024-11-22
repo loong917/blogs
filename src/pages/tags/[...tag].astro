@@ -32,7 +32,7 @@ const currentTag = Astro.params;
     <main>
         <Header title="loong博客" />
         <div class="w-full py-16">
-            <h1 class="mb-12 text-left text-white text-2xl leading-tight font-serif italic sm:mb-16 sm:text-4xl">#{currentTag.tag}文章</h1>
+            <h1 class="mb-12 text-white text-2xl leading-tight font-serif italic sm:mb-16 sm:text-4xl">#{currentTag.tag}文章</h1>
             <ul role="list" class="link-card-grid">
                 {
                     blogs.map((blog) => (
