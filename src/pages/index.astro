@@ -8,7 +8,7 @@ const blogs = await Astro.glob("../content/blogs/*.md");
 // 最新文章
 const sortedBlogs = blogs
     .sort((a, b) => b.frontmatter.id - a.frontmatter.id)
-    .slice(0, 12);
+    .slice(0, 9);
 ---
 
 <Layout title="loong博客">
