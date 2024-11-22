@@ -14,27 +14,29 @@ const sortedBlogs = blogs
 <Layout title="loong博客">
     <main>
         <Header title="loong博客" />
-        <ul role="list" class="link-card-grid">
-            {
-                sortedBlogs.map((blog) => (
-                    <Card
-                        id={blog.frontmatter.id}
-                        title={blog.frontmatter.title}
-                        date={blog.frontmatter.date}
-                        image={blog.frontmatter.image}
-                        tags={blog.frontmatter.tags}
-                        mediaTransitionName={`media-image-${blog.frontmatter.id}`}
-                    />
-                ))
-            }
-        </ul>
-        <div class="flex items-center justify-end">
-            <button
-                class="py-12 font-bold text-white uppercase align-middle transition-all rounded-lg"
-                type="button"
-            >
-                <a class="link" href="/blogs">更多文章</a>
-            </button>
+        <div class="w-full py-16">
+            <ul role="list" class="link-card-grid">
+                {
+                    sortedBlogs.map((blog) => (
+                        <Card
+                            id={blog.frontmatter.id}
+                            title={blog.frontmatter.title}
+                            date={blog.frontmatter.date}
+                            image={blog.frontmatter.image}
+                            tags={blog.frontmatter.tags}
+                            mediaTransitionName={`media-image-${blog.frontmatter.id}`}
+                        />
+                    ))
+                }
+            </ul>
+            <div class="flex items-center justify-end">
+                <button
+                    class="py-12 font-bold text-white uppercase align-middle transition-all rounded-lg"
+                    type="button"
+                >
+                    <a class="link" href="/blogs">更多文章</a>
+                </button>
+            </div>
         </div>
         <Footer />
     </main>
