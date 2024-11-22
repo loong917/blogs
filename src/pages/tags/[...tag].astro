@@ -23,12 +23,16 @@ export async function getStaticPaths() {
 }
 
 const { blogs } = Astro.props;
+
+const currentTag = Astro.params;
+
 ---
 
 <Layout title="loong博客">
     <main>
         <Header title="loong博客" />
         <div class="w-full py-16">
+            <h1 class="mb-12 text-2xl leading-tight font-serif italic sm:mb-16 sm:text-4xl">#{currentTag}文章</h1>
             <ul role="list" class="link-card-grid">
                 {
                     blogs.map((blog) => (
