@@ -7,39 +7,37 @@ import { getCollection } from "astro:content";
 const blogs = await getCollection("blogs");
 const uniqueTags = [...new Set(blogs.map((blog) => blog.data.tags).flat())];
 let groupBlogs = uniqueTags.map((tag) => {
-  const filterBlogs = blogs.filter((blog) => blog.data.tags.includes(tag));
-  return {
-    tag: tag,
-    blogs: filterBlogs,
-  };
+    const filterBlogs = blogs.filter((blog) => blog.data.tags.includes(tag));
+    return {
+        tag: tag,
+        blogs: filterBlogs,
+    };
 });
 ---
 
 <Layout title="loong博客">
-  <main>
-    <Header title="loong博客" />
-    <div class="w-full">
-      <h1 class="text-white text-2xl">所有标签</h1>
-      {
-        groupBlogs.map((blog) => {
-          return (
-            <a
-              class="mb-10 flex text-white justify-between items-start gap-8 group"
-              href={`/tags/${blog.tag}`}
-            >
-              <div class="grow">
-                <h2 class="text-xl leading-tight font-serif font-medium group-hover:underline group-hover:decoration-dashed group-hover:underline-offset-4 group-hover:decoration-1 sm:text-2xl">
-                  {blog.tag}
-                </h2>
-                <div class="mt-1 py-3 text-sm leading-normal">
-                  {blog.blogs.length} 篇
-                </div>
-              </div>
-            </a>
-          );
-        })
-      }
-    </div>
-    <Footer />
-  </main>
+    <main>
+        <Header title="loong博客" />
+        <h1 class="text-white text-2xl mt-6 mb-12 italic">所有标签</h1>
+        {
+            groupBlogs.map((blog) => {
+                return (
+                    <a
+                        class="mb-10 flex text-white justify-between items-start gap-8 group"
+                        href={`/tags/${blog.tag}`}
+                    >
+                        <div class="grow">
+                            <h2 class="text-xl leading-tight font-serif font-medium group-hover:underline group-hover:decoration-dashed group-hover:underline-offset-4 group-hover:decoration-1 sm:text-2xl">
+                                {blog.tag}
+                            </h2>
+                            <div class="mt-1 py-3 text-sm leading-normal">
+                                {blog.blogs.length} 篇
+                            </div>
+                        </div>
+                    </a>
+                );
+            })
+        }
+        <Footer />
+    </main>
 </Layout>
