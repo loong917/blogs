@@ -2,7 +2,7 @@
 import { ViewTransitions } from "astro:transitions";
 
 interface Props {
-    title: string;
+  title: string;
 }
 
 const { title } = Astro.props;
@@ -10,79 +10,68 @@ const { title } = Astro.props;
 
 <!doctype html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="description" content="Astro description" />
-        <meta name="viewport" content="width=device-width" />
-        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-        <meta name="generator" content={Astro.generator} />
-        <title>{title}</title>
-        <ViewTransitions />
-    </head>
-    <body>
-        <slot />
-        <style is:global>
-            :root {
-                --accent: 136, 58, 234;
-                --accent-light: 224, 204, 250;
-                --accent-dark: 49, 10, 101;
-                --accent-gradient: linear-gradient(
-                    45deg,
-                    rgb(var(--accent)),
-                    rgb(var(--accent-light)) 30%,
-                    white 60%
-                );
-            }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content="Astro description" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+    <ViewTransitions />
+  </head>
+  <body>
+    <slot />
+    <style is:global>
+      :root {
+        --accent: 136, 58, 234;
+        --accent-light: 224, 204, 250;
+        --accent-dark: 49, 10, 101;
+        --accent-gradient: linear-gradient(
+          45deg,
+          rgb(var(--accent)),
+          rgb(var(--accent-light)) 30%,
+          white 60%
+        );
+      }
 
-            html {
-                font-family:
-                    "Chinese Quotes",
-                    "Inter var",
-                    "Inter",
-                    ui-sans-serif,
-                    system-ui,
-                    -apple-system,
-                    BlinkMacSystemFont,
-                    "Segoe UI",
-                    Roboto,
-                    "Helvetica Neue",
-                    Helvetica,
-                    Arial,
-                    "Noto Sans",
-                    sans-serif,
-                    "Apple Color Emoji",
-                    "Segoe UI Emoji",
-                    "Segoe UI Symbol",
-                    "Noto Color Emoji";
-                background: #13151a;
-                background-size: 224px;
-            }
+      html {
+        font-family:
+          Inter,
+          ui-sans-serif,
+          system-ui,
+          sans-serif,
+          "Apple Color Emoji",
+          "Segoe UI Emoji",
+          Segoe UI Symbol,
+          "Noto Color Emoji";
+        background: #171717;
+      }
 
-            code {
-                font-family: "Lucida Console", "monospace";
-            }
+      code {
+        font-family: "Lucida Console", "monospace";
+      }
 
-            body {
-                --sb-track-color: #13151a;
-                --sb-thumb-color: #343a34;
-                --sb-size: 6px;
+      body {
+        --sb-track-color: #13151a;
+        --sb-thumb-color: #343a34;
+        --sb-size: 6px;
 
-                scrollbar-color: var(--sb-thumb-color) var(--sb-track-color);
-            }
+        scrollbar-color: var(--sb-thumb-color) var(--sb-track-color);
+      }
 
-            body::-webkit-scrollbar {
-                width: var(--sb-size);
-            }
+      body::-webkit-scrollbar {
+        width: var(--sb-size);
+      }
 
-            body::-webkit-scrollbar-track {
-                background: var(--sb-track-color);
-                border-radius: 10px;
-            }
+      body::-webkit-scrollbar-track {
+        background: var(--sb-track-color);
+        border-radius: 10px;
+      }
 
-            body::-webkit-scrollbar-thumb {
-                background: var(--sb-thumb-color);
-                border-radius: 10px;
-            }
-        </style>
-    </body>
+      body::-webkit-scrollbar-thumb {
+        background: var(--sb-thumb-color);
+        border-radius: 10px;
+      }
+    </style>
+  </body>
 </html>
