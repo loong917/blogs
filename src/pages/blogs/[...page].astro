@@ -28,20 +28,22 @@ const { page } = Astro.props;
 <Layout title="loong博客">
     <main>
         <Header title="loong博客" />
-        <ul role="list" class="link-card-grid">
-            {
-                page.data.map((blog) => (
-                    <Card
-                        id={blog.data.id}
-                        title={blog.data.title}
-                        date={blog.data.date}
-                        image={blog.data.image}
-                        tags={blog.data.tags}
-                        mediaTransitionName={`media-image-${blog.data.id}`}
-                    />
-                ))
-            }
-        </ul>
+        <div class="w-full py-16">
+            <ul role="list" class="link-card-grid">
+                {
+                    page.data.map((blog) => (
+                        <Card
+                            id={blog.data.id}
+                            title={blog.data.title}
+                            date={blog.data.date}
+                            image={blog.data.image}
+                            tags={blog.data.tags}
+                            mediaTransitionName={`media-image-${blog.data.id}`}
+                        />
+                    ))
+                }
+            </ul>
+        </div>
         <Pagination page={page} />
         <Footer />
     </main>
