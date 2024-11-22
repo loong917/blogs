@@ -13,30 +13,36 @@ let groupBlogs = uniqueTags.map((tag) => {
         blogs: filterBlogs,
     };
 });
-
-console.log(groupBlogs);
 ---
 
 <Layout title="loong博客">
     <main>
         <Header title="loong博客" />
-        <div class="py-16 text-white">
-            {
-                groupBlogs.map((blog) => (
-                    <a  class="flex justify-between items-start gap-8 group sm:mb-12"
-                        href={`/tags/${blog.tag}`}>
+        <h1 class="mb-12 text-2xl font-serif italic sm:mb-16 sm:text-4xl">
+            全部标签
+        </h1>
+        {
+            groupBlogs.map((blog) => {
+                return (
+                    <a
+                        class="mb-10 flex justify-between items-start gap-8 group sm:mb-12"
+                        href={`/tags/${blog.tag}`}
+                    >
                         <div class="grow">
-                            <h2 class="leading-tight font-serif font-medium group-hover:underline group-hover:decoration-dashed group-hover:underline-offset-4 group-hover:decoration-1 sm:text-2xl">
+                            <h2 class="text-xl leading-tight font-serif font-medium group-hover:underline group-hover:decoration-dashed group-hover:underline-offset-4 group-hover:decoration-1 sm:text-2xl">
                                 {blog.tag}
                             </h2>
                             <div class="mt-1 text-sm leading-normal">
-                                {blog.blogs.length}篇文章
+                                {blog.blogs.length}
                             </div>
                         </div>
+                        <div class="hidden font-serif italic opacity-0 transition group-hover:opacity-100 sm:inline-flex sm:gap-1 sm:items-center sm:shrink-0">
+                            View Tag Archive
+                        </div>
                     </a>
-                ))
-            }
-        </div>
+                );
+            })
+        }
         <Footer />
     </main>
 </Layout>
