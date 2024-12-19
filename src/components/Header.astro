@@ -1,4 +1,6 @@
 ---
+import SpeedInsights from '@vercel/speed-insights/astro';
+
 interface Props {
     title: string;
 }
@@ -69,6 +71,8 @@ const { title } = Astro.props;
         <a class="hidden font-medium dark:text-gray-100 sm:block" href="/">关于</a>
     </div>
 </header>
+
+<SpeedInsights />
 
 <style>
     .logo {
