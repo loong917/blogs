@@ -13,19 +13,19 @@
     },
     {
         "id": 2024121101,
-        "title": "Golang Concurrency - Goroutine",
+        "title": "Goroutine",
         "date": "2024年12月11日",
         "link": "https://www.loongzxl.com/blog/2024121101"
     },
     {
         "id": 2024120602,
-        "title": "Golang Concurrency - Select",
+        "title": "Select",
         "date": "2024年12月6日",
         "link": "https://www.loongzxl.com/blog/2024120602"
     },
     {
         "id": 2024120601,
-        "title": "Golang Concurrency - Channel",
+        "title": "Channel",
         "date": "2024年12月6日",
         "link": "https://www.loongzxl.com/blog/2024120601"
     },
