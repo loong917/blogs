@@ -3,48 +3,64 @@
         "id": 2025022801,
         "title": "限流算法",
         "date": "2025年2月28日",
+        "tag": "programming",
+        "cover": "https://loongzxl.com/cover/coding.jpg",
         "link": "https://www.loongzxl.com/blog/2025022801"
     },
     {
         "id": 2025022601,
         "title": "Redis 执行 Lua，如何保证原子性？",
         "date": "2025年2月26日",
+        "tag": "programming",
+        "cover": "https://loongzxl.com/cover/coding.jpg",
         "link": "https://www.loongzxl.com/blog/2025022601"
     },
     {
         "id": 2024121101,
         "title": "Goroutine",
         "date": "2024年12月11日",
+        "tag": "golang",
+        "cover": "https://loongzxl.com/cover/golang.jpeg",
         "link": "https://www.loongzxl.com/blog/2024121101"
     },
     {
         "id": 2024120602,
         "title": "Select",
         "date": "2024年12月6日",
+        "tag": "golang",
+        "cover": "https://loongzxl.com/cover/golang.jpeg",
         "link": "https://www.loongzxl.com/blog/2024120602"
     },
     {
         "id": 2024120601,
         "title": "Channel",
         "date": "2024年12月6日",
+        "tag": "golang",
+        "cover": "https://loongzxl.com/cover/golang.jpeg",
         "link": "https://www.loongzxl.com/blog/2024120601"
     },
     {
         "id": 2024110401,
         "title": "CDN 防盗链",
         "date": "2024年11月04日",
+        "tag": "programming",
+        "cover": "https://loongzxl.com/cover/coding.jpg",
         "link": "https://www.loongzxl.com/blog/2024110401"
     },
     {
         "id": 2024101601,
         "title": "乐观锁与悲观锁",
         "date": "2024年10月16日",
+        "tag": "programming",
+        "cover": "https://loongzxl.com/cover/coding.jpg",
         "link": "https://www.loongzxl.com/blog/2024101601"
     },
     {
         "id": 2024042601,
         "title": "死锁与活锁？",
         "date": "2024年4月26日",
+        "tag": "programming",
+        "cover": "https://loongzxl.com/cover/coding.jpg",
         "link": "https://www.loongzxl.com/blog/2024042601"
     }
 ]
