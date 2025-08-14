@@ -9,45 +9,44 @@ import { getCollection } from "astro:content";
 export const PAGE_SIZE = 6;
 
 export async function getStaticPaths() {
-    const blogs = await getCollection("blogs");
-    const uniqueTags = [...new Set(blogs.map((blog) => blog.data.tags).flat())];
-    return uniqueTags.map((tag) => {
-        const filterBlogs = blogs.filter((blog) =>
-            blog.data.tags.includes(tag),
-        );
-        return {
-            params: { tag },
-            props: { blogs: filterBlogs },
-        };
-    });
+  const blogs = await getCollection("blogs");
+  const uniqueTags = [...new Set(blogs.map((blog) => blog.data.tags).flat())];
+  return uniqueTags.map((tag) => {
+    const filterBlogs = blogs.filter((blog) => blog.data.tags.includes(tag));
+    return {
+      params: { tag },
+      props: { blogs: filterBlogs },
+    };
+  });
 }
 
 const { blogs } = Astro.props;
 
 const currentTag = Astro.params;
-
 ---
 
 <Layout title="loong博客">
-    <main>
-        <Header title="loong博客" />
-        <div class="w-full">
-            <h1 class="text-white text-2xl mt-6 mb-12 italic">#{currentTag.tag}文章</h1>
-            <ul role="list" class="link-card-grid">
-                {
-                    blogs.map((blog) => (
-                        <Card
-                            id={blog.data.id}
-                            title={blog.data.title}
-                            date={blog.data.date}
-                            image={blog.data.image}
-                            tags={blog.data.tags}
-                            mediaTransitionName={`media-image-${blog.data.id}`}
-                        />
-                    ))
-                }
-            </ul>
-        </div>
-        <Footer />
-    </main>
+  <main>
+    <Header title="loong博客" />
+    <div class="w-full">
+      <h1 class="text-white text-2xl mt-6 mb-12 italic">
+        #{currentTag.tag}文章
+      </h1>
+      <ul role="list" class="link-card-grid">
+        {
+          blogs.map((blog) => (
+            <Card
+              id={blog.data.id}
+              title={blog.data.title}
+              date={blog.data.date}
+              image={blog.data.image}
+              tags={blog.data.tags}
+              mediaTransitionName={`media-image-${blog.data.id}`}
+            />
+          ))
+        }
+      </ul>
+    </div>
+    <Footer />
+  </main>
 </Layout>
