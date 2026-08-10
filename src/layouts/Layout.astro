@@ -16,7 +16,7 @@ const canonicalURL = new URL(canonicalPath, 'https://loongzxl.com');
   <head>
     <meta charset="UTF-8" />
     <meta name="description" content={description} />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="theme-color" content="#f3ecdf" />
     <meta name="color-scheme" content="light" />
     <meta name="robots" content="index, follow" />
@@ -49,7 +49,9 @@ const canonicalURL = new URL(canonicalPath, 'https://loongzxl.com');
     --line: rgba(71, 59, 48, 0.12);
     --clay: #ca7048;
     --clay-dark: #995038;
-    --content-width: 780px;
+    --content-width: 48.75rem;
+    --page-gutter: clamp(1rem, 4vw, 3.5rem);
+    --section-space: clamp(2rem, 5vw, 4rem);
     --font-serif: Georgia, 'Noto Serif SC', 'Songti SC', serif;
     --font-sans: Inter, 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif;
   }
@@ -70,7 +72,7 @@ const canonicalURL = new URL(canonicalPath, 'https://loongzxl.com');
     background: var(--paper);
     margin: 0;
     min-height: 100vh;
-    overflow-x: hidden;
+    overflow-x: clip;
     padding: 0;
     position: relative;
   }
@@ -141,7 +143,7 @@ const canonicalURL = new URL(canonicalPath, 'https://loongzxl.com');
     max-width: none;
     min-height: 100vh;
     overflow: hidden;
-    padding: clamp(1.25rem, 4vw, 3.5rem);
+    padding: max(1.25rem, env(safe-area-inset-top)) max(var(--page-gutter), env(safe-area-inset-right)) max(1.25rem, env(safe-area-inset-bottom)) max(var(--page-gutter), env(safe-area-inset-left));
     position: relative;
   }
 
@@ -165,7 +167,7 @@ const canonicalURL = new URL(canonicalPath, 'https://loongzxl.com');
 
   .page-title {
     font-family: var(--font-serif);
-    font-size: clamp(2rem, 6vw, 4.4rem);
+    font-size: clamp(2rem, 8vw, 4.4rem);
     font-weight: 500;
     letter-spacing: -0.035em;
     line-height: 1.03;
@@ -195,11 +197,15 @@ const canonicalURL = new URL(canonicalPath, 'https://loongzxl.com');
   }
 
   .filter-pill {
+    align-items: center;
     background: rgba(255, 255, 255, 0.35);
     border: 1px solid rgba(96, 78, 61, 0.06);
     border-radius: 999px;
     color: var(--ink-soft);
+    display: inline-flex;
     font-size: 0.74rem;
+    justify-content: center;
+    min-height: 2.75rem;
     padding: 0.68rem 1rem;
     text-decoration: none;
     transition: background-color 160ms ease, color 160ms ease, transform 160ms ease;
@@ -215,15 +221,40 @@ const canonicalURL = new URL(canonicalPath, 'https://loongzxl.com');
     transform: translateY(-1px);
   }
 
-  @media (max-width: 640px) {
-    body {
-      padding: 0;
-    }
-
+  @media (max-width: 48rem) {
     main {
       border-radius: 0;
       max-width: 100%;
       min-height: 100vh;
+    }
+
+    .filter-row {
+      gap: 0.5rem;
+      margin-block: 1.5rem 2rem;
+    }
+  }
+
+  @media (max-width: 30rem) {
+    :root {
+      --page-gutter: 0.9rem;
+    }
+
+    .page-title {
+      font-size: clamp(2rem, 13vw, 3.15rem);
+      overflow-wrap: anywhere;
+    }
+
+    .page-intro {
+      font-size: 0.95rem;
+    }
+
+    .filter-row {
+      margin-top: 1.25rem;
+    }
+
+    .filter-pill {
+      flex: 1 1 auto;
+      padding-inline: 0.8rem;
     }
   }
 

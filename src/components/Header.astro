@@ -89,6 +89,7 @@ const { title, active } = Astro.props;
     border-radius: 999px;
     color: var(--ink-soft);
     font-size: 0.8rem;
+    min-height: 2.75rem;
     padding: 0.65rem 0.9rem;
     position: relative;
     text-decoration: none;
@@ -113,7 +114,7 @@ const { title, active } = Astro.props;
     width: 0.9rem;
   }
 
-  @media (max-width: 540px) {
+  @media (max-width: 40rem) {
     .site-header {
       padding-bottom: 1rem;
     }
@@ -127,11 +128,31 @@ const { title, active } = Astro.props;
     }
 
     nav a {
+      align-items: center;
+      display: inline-flex;
       padding: 0.55rem 0.65rem;
     }
 
     nav a.active::after {
       bottom: 0.2rem;
+    }
+  }
+
+  @media (max-width: 22rem) {
+    .site-header {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 0.8rem;
+    }
+
+    nav {
+      justify-content: space-between;
+      width: 100%;
+    }
+
+    nav a {
+      justify-content: center;
+      padding-inline: 0.8rem;
     }
   }
 </style>

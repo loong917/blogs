@@ -61,9 +61,15 @@ const sortedBlogs = blogs.sort((a, b) => b.data.id - a.data.id).slice(0, 9);
     text-decoration: none;
   }
 
-  @media (max-width: 540px) {
+  @media (max-width: 40rem) {
     .more-link {
       margin-left: 3.45rem;
+    }
+  }
+
+  @media (max-width: 24rem) {
+    .more-link {
+      margin-left: 2.85rem;
     }
   }
 </style>

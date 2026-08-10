@@ -31,9 +31,12 @@ const { page } = Astro.props;
   }
 
   a {
+    align-items: center;
     color: var(--clay-dark);
+    display: inline-flex;
     font-size: 0.75rem;
     font-weight: 700;
+    min-height: 2.75rem;
     text-decoration: none;
   }
 
@@ -46,9 +49,20 @@ const { page } = Astro.props;
     font-size: 0.65rem;
   }
 
-  @media (max-width: 540px) {
+  @media (max-width: 40rem) {
     .pagination {
       margin-left: 3.45rem;
+    }
+  }
+
+  @media (max-width: 24rem) {
+    .pagination {
+      gap: 0.4rem;
+      margin-left: 2.85rem;
+    }
+
+    a {
+      font-size: 0.7rem;
     }
   }
 </style>

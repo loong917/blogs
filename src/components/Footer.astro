@@ -20,8 +20,20 @@
   }
 
   @media (max-width: 640px) {
+    footer {
+      align-items: flex-start;
+      gap: 0.5rem;
+      margin-top: 3.5rem;
+    }
+
     footer span:nth-child(2) {
       display: none;
+    }
+  }
+
+  @media (max-width: 24rem) {
+    footer {
+      flex-direction: column;
     }
   }
 </style>

@@ -86,4 +86,15 @@ const tags = [...new Set(blogs.flatMap((blog) => blog.data.tags))]
       grid-template-columns: 1fr;
     }
   }
+
+  @media (max-width: 24rem) {
+    .tag-cloud {
+      margin-top: 2rem;
+    }
+
+    .tag-cloud a {
+      border-radius: 1rem;
+      padding: 1rem;
+    }
+  }
 </style>

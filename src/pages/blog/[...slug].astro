@@ -61,10 +61,12 @@ const dateView = getDateView(date, id);
   }
 
   .back-link {
+    align-items: center;
     color: var(--ink-muted);
-    display: inline-block;
+    display: inline-flex;
     font-size: 0.7rem;
     margin-top: 0.75rem;
+    min-height: 2.75rem;
     text-decoration: none;
   }
 
@@ -104,6 +106,7 @@ const dateView = getDateView(date, id);
     line-height: 1.1;
     margin: 0 auto;
     max-width: 720px;
+    overflow-wrap: anywhere;
     text-wrap: balance;
   }
 
@@ -116,8 +119,11 @@ const dateView = getDateView(date, id);
   }
 
   .tag-row a {
+    align-items: center;
     color: var(--clay-dark);
+    display: inline-flex;
     font-size: 0.7rem;
+    min-height: 2.25rem;
     text-decoration: none;
   }
 
@@ -127,6 +133,8 @@ const dateView = getDateView(date, id);
     font-family: var(--font-serif);
     font-size: 1.02rem;
     line-height: 1.95;
+    min-width: 0;
+    overflow-wrap: break-word;
     padding-top: clamp(2.5rem, 7vw, 4.5rem);
   }
 
@@ -422,6 +430,7 @@ const dateView = getDateView(date, id);
     color: #eee5d8;
     margin: 1.8rem 0;
     overflow: auto;
+    overscroll-behavior-inline: contain;
     padding: 2.4rem 1.25rem 1.25rem;
     position: relative;
   }
@@ -491,6 +500,8 @@ const dateView = getDateView(date, id);
   .journal-table-wrap {
     margin: 2rem 0;
     overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    scrollbar-width: thin;
   }
 
   .journal-prose table {
@@ -563,8 +574,13 @@ const dateView = getDateView(date, id);
     --astro-code-token-link: #9cb8c4;
   }
 
-  @media (max-width: 640px) {
+  @media (max-width: 48rem) {
+    .entry-hero {
+      padding-block: 2.5rem 2.25rem;
+    }
+
     .entry-hero h1 {
+      font-size: clamp(2.15rem, 9vw, 3.5rem);
       margin-top: 0;
     }
 
@@ -598,6 +614,108 @@ const dateView = getDateView(date, id);
       border-radius: 0.9rem;
       margin-left: -0.5rem;
       margin-right: -0.5rem;
+    }
+  }
+
+  @media (max-width: 30rem) {
+    .entry-hero {
+      padding-block: 1.8rem 2rem;
+    }
+
+    .article-mark {
+      border-radius: 1.1rem;
+      height: 4rem;
+      margin-block: 1rem 1.4rem;
+      width: 4rem;
+    }
+
+    .entry-hero h1 {
+      font-size: clamp(2rem, 11vw, 2.85rem);
+      letter-spacing: -0.035em;
+      line-height: 1.14;
+    }
+
+    .tag-row {
+      gap: 0.35rem 0.65rem;
+      margin-top: 1rem;
+    }
+
+    .journal-prose {
+      font-size: 0.95rem;
+      line-height: 1.88;
+      padding-top: 2.25rem;
+    }
+
+    .journal-prose p {
+      text-align: left;
+    }
+
+    .journal-prose ul > li {
+      padding-left: 1.3rem;
+    }
+
+    .journal-prose ol > li {
+      padding-left: 2rem;
+    }
+
+    .journal-prose li > ul,
+    .journal-prose li > ol {
+      padding-left: 0.65rem;
+    }
+
+    .journal-prose .journal-callout {
+      border-radius: 0 0.85rem 0.85rem 0;
+      padding: 0.9rem 1rem;
+    }
+
+    .journal-prose .journal-code {
+      margin-inline: -0.9rem;
+      padding: 2.25rem 1rem 1rem;
+    }
+
+    .journal-prose pre code {
+      font-size: 0.72rem;
+    }
+
+    .journal-figure {
+      margin-block: 2rem;
+    }
+
+    .journal-image {
+      border-radius: 0.85rem;
+    }
+
+    .journal-table-wrap {
+      margin-inline: -0.9rem;
+      padding-inline: 0.9rem;
+    }
+
+    .journal-prose th,
+    .journal-prose td {
+      min-width: 7rem;
+      padding: 0.7rem;
+    }
+
+    .back-to-collection {
+      min-height: 3.25rem;
+    }
+  }
+
+  @media (max-width: 24rem) {
+    .journal-prose .journal-references > li {
+      padding: 3rem 0.85rem 0.8rem;
+    }
+
+    .journal-prose .journal-references > li::before {
+      left: 0.8rem;
+      top: 0.75rem;
+      transform: none;
+    }
+
+    .journal-prose .journal-references > li::after {
+      right: 0.85rem;
+      top: 1rem;
+      transform: none;
     }
   }
 </style>
