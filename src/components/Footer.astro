@@ -1,5 +1,27 @@
-<div class="mt-16 flex flex-col items-center">
-    <div class="mb-2 flex space-x-2 text-sm text-gray-500 dark:text-gray-400">
-        <div>Copyright © 2025. All rights reserved</div>
-    </div>
-</div>
+<footer>
+  <span>LOONG'S BLOGS</span>
+  <span>Slow is smooth, smooth is fast.</span>
+  <span>© 2026</span>
+</footer>
+
+<style>
+  footer {
+    align-items: center;
+    border-top: 1px solid var(--line);
+    color: var(--ink-muted);
+    display: flex;
+    font-size: 0.65rem;
+    justify-content: space-between;
+    letter-spacing: 0.08em;
+    margin: 4.5rem auto 0;
+    max-width: var(--content-width);
+    padding: 1.5rem 0 0.35rem;
+    width: 100%;
+  }
+
+  @media (max-width: 640px) {
+    footer span:nth-child(2) {
+      display: none;
+    }
+  }
+</style>

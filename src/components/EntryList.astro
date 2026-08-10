@@ -1,0 +1,62 @@
+---
+import Card from './Card.astro';
+import { createExcerpt, getDateView } from '../utils/blog';
+import type { BlogData } from '../utils/blog';
+
+interface EntryItem {
+  data: BlogData;
+  body: string;
+}
+
+interface Props {
+  entries: EntryItem[];
+}
+
+const { entries } = Astro.props;
+let currentMonth = '';
+---
+
+<div class="entry-list">
+  {
+    entries.map((entry) => {
+      const month = getDateView(entry.data.date, entry.data.id).month;
+      const showMonth = month !== currentMonth;
+      currentMonth = month;
+
+      return (
+        <div class="entry-group">
+          {showMonth && <h2 class="month-label">{month}</h2>}
+          <Card
+            {...entry.data}
+            summary={createExcerpt(entry.body, entry.data.summary)}
+          />
+        </div>
+      );
+    })
+  }
+</div>
+
+<style>
+  .entry-list {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .entry-group {
+    display: contents;
+  }
+
+  .month-label {
+    color: var(--ink-muted);
+    font-family: var(--font-sans);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    margin: 1.8rem 0 0.35rem;
+    text-transform: uppercase;
+  }
+
+  .entry-group:first-child .month-label {
+    margin-top: 0;
+  }
+</style>

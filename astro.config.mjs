@@ -1,8 +1,20 @@
 import { defineConfig } from 'astro/config';
+import rehypeJournal from './src/plugins/rehype-journal.mjs';
 
-import tailwind from '@astrojs/tailwind';
-
-// https://astro.build/config
 export default defineConfig({
-    integrations: [tailwind()]
+    site: 'https://loongzxl.com',
+    compressHTML: true,
+    devToolbar: {
+        enabled: false,
+    },
+    markdown: {
+        gfm: true,
+        smartypants: true,
+        syntaxHighlight: 'shiki',
+        shikiConfig: {
+            theme: 'css-variables',
+            wrap: true,
+        },
+        rehypePlugins: [rehypeJournal],
+    },
 });

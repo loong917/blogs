@@ -2,49 +2,53 @@
 const { page } = Astro.props;
 ---
 
-<div class="flex justify-center gap-12 py-12">
-    {
-        page.url.prev && (
-            <button
-                class="flex items-center gap-2 px-6 py-3 font-sans font-bold text-center text-white uppercase align-middle transition-all rounded-lg select-none hover:bg-gray-900/10 active:bg-gray-900/20 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
-                type="button">
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke-width="2"
-                    stroke="currentColor"
-                    aria-hidden="true"
-                    class="w-4 h-4">
-                    <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"/>
-                </svg>
-                <a class="link" href={page.url.prev}>上一页</a>
-            </button>
-        )
+<nav class="pagination" aria-label="分页">
+  {
+    page.url.prev ? (
+      <a href={page.url.prev}><span aria-hidden="true">←</span> 上一页</a>
+    ) : (
+      <span></span>
+    )
+  }
+  <small>{page.currentPage} / {page.lastPage}</small>
+  {
+    page.url.next ? (
+      <a href={page.url.next}>下一页 <span aria-hidden="true">→</span></a>
+    ) : (
+      <span></span>
+    )
+  }
+</nav>
+
+<style>
+  .pagination {
+    align-items: center;
+    border-top: 1px solid var(--line);
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    margin: 2.8rem 0 0 4.6rem;
+    padding-top: 1.4rem;
+  }
+
+  a {
+    color: var(--clay-dark);
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  a:last-child {
+    justify-self: end;
+  }
+
+  small {
+    color: var(--ink-muted);
+    font-size: 0.65rem;
+  }
+
+  @media (max-width: 540px) {
+    .pagination {
+      margin-left: 3.45rem;
     }
-    {
-        page.url.next && (
-            <button
-                class="flex items-center gap-2 px-6 py-3 font-sans font-bold text-center text-white uppercase align-middle transition-all rounded-lg select-none hover:bg-gray-900/10 active:bg-gray-900/20 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
-                type="button">
-                <a class="link" href={page.url.next}>下一页</a>
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke-width="2"
-                    stroke="currentColor"
-                    aria-hidden="true"
-                    class="w-4 h-4">
-                    <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/>
-                </svg>
-            </button>
-        )
-    }
-</div>
+  }
+</style>

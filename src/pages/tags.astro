@@ -1,43 +1,89 @@
 ---
-import Layout from "../layouts/Layout.astro";
-import Header from "../components/Header.astro";
-import Footer from "../components/Footer.astro";
-import { getCollection } from "astro:content";
+import { getCollection } from 'astro:content';
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
 
-const blogs = await getCollection("blogs");
-const uniqueTags = [...new Set(blogs.map((blog) => blog.data.tags).flat())];
-let groupBlogs = uniqueTags.map((tag) => {
-    const filterBlogs = blogs.filter((blog) => blog.data.tags.includes(tag));
-    return {
-        tag: tag,
-        blogs: filterBlogs,
-    };
-});
+const blogs = await getCollection('blogs');
+const tags = [...new Set(blogs.flatMap((blog) => blog.data.tags))]
+  .map((tag) => ({ tag, count: blogs.filter((blog) => blog.data.tags.includes(tag)).length }))
+  .sort((a, b) => b.count - a.count || a.tag.localeCompare(b.tag));
 ---
 
-<Layout title="loong博客">
-    <main>
-        <Header title="loong博客" />
-        <h1 class="text-white text-2xl mt-6 mb-12 italic">所有标签</h1>
+<Layout title="所有标签 · loong博客" canonicalPath="/tags">
+  <main id="main-content">
+    <Header title="loong博客" active="tags" />
+    <div class="content-width tags-page">
+      <h1 class="page-title">所有标签</h1>
+      <p class="page-intro">根据标签浏览博客</p>
+
+      <div class="tag-cloud">
         {
-            groupBlogs.map((blog) => {
-                return (
-                    <a
-                        class="mb-10 flex text-white justify-between items-start gap-8 group"
-                        href={`/tags/${blog.tag}`}
-                    >
-                        <div class="grow">
-                            <h2 class="text-xl leading-tight font-serif font-medium group-hover:underline group-hover:decoration-dashed group-hover:underline-offset-4 group-hover:decoration-1 sm:text-2xl">
-                                {blog.tag}
-                            </h2>
-                            <div class="mt-1 py-3 text-sm leading-normal">
-                                {blog.blogs.length} 篇
-                            </div>
-                        </div>
-                    </a>
-                );
-            })
+          tags.map(({ tag, count }, index) => (
+            <a href={`/tags/${tag}`} style={`--tag-order: ${index};`}>
+              <span>{tag}</span>
+              <small>{String(count)} 篇</small>
+              <i aria-hidden="true">↗</i>
+            </a>
+          ))
         }
-        <Footer />
-    </main>
+      </div>
+    </div>
+    <Footer />
+  </main>
 </Layout>
+
+<style>
+  .tags-page {
+    padding-top: clamp(1.5rem, 5vw, 4rem);
+  }
+
+  .tag-cloud {
+    display: grid;
+    gap: 0.8rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin-top: 2.8rem;
+  }
+
+  .tag-cloud a {
+    align-items: center;
+    background: rgba(255, 255, 255, 0.3);
+    border: 1px solid rgba(83, 66, 52, 0.06);
+    border-radius: 1.2rem;
+    display: grid;
+    gap: 0.35rem;
+    grid-template-columns: 1fr auto;
+    padding: 1.2rem;
+    text-decoration: none;
+    transition: background 160ms ease, transform 160ms ease;
+  }
+
+  .tag-cloud a:hover {
+    background: rgba(255, 255, 255, 0.58);
+    transform: translateY(-2px);
+  }
+
+  .tag-cloud span {
+    font-family: var(--font-serif);
+    font-size: 1.2rem;
+  }
+
+  .tag-cloud small {
+    color: var(--ink-muted);
+    font-size: 0.62rem;
+    grid-column: 1;
+  }
+
+  .tag-cloud i {
+    color: var(--clay);
+    font-style: normal;
+    grid-column: 2;
+    grid-row: 1 / span 2;
+  }
+
+  @media (max-width: 580px) {
+    .tag-cloud {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

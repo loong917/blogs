@@ -1,52 +1,56 @@
 ---
-import Layout from "../../layouts/Layout.astro";
-import Header from "../../components/Header.astro";
-import Footer from "../../components/Footer.astro";
-import Card from "../../components/Card.astro";
-import { getCollection } from "astro:content";
-
-// 页面大小
-export const PAGE_SIZE = 6;
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import EntryList from '../../components/EntryList.astro';
 
 export async function getStaticPaths() {
-  const blogs = await getCollection("blogs");
-  const uniqueTags = [...new Set(blogs.map((blog) => blog.data.tags).flat())];
-  return uniqueTags.map((tag) => {
-    const filterBlogs = blogs.filter((blog) => blog.data.tags.includes(tag));
-    return {
-      params: { tag },
-      props: { blogs: filterBlogs },
-    };
-  });
+  const blogs = await getCollection('blogs');
+  const uniqueTags = [...new Set(blogs.flatMap((blog) => blog.data.tags))];
+  return uniqueTags.map((tag) => ({
+    params: { tag },
+    props: {
+      blogs: blogs
+        .filter((blog) => blog.data.tags.includes(tag))
+        .sort((a, b) => b.data.id - a.data.id),
+    },
+  }));
 }
 
 const { blogs } = Astro.props;
-
-const currentTag = Astro.params;
+const tag = Astro.params.tag ?? '';
 ---
 
-<Layout title="loong博客">
-  <main>
-    <Header title="loong博客" />
-    <div class="w-full">
-      <h1 class="text-white text-2xl mt-6 mb-12 italic">
-        #{currentTag.tag}文章
-      </h1>
-      <ul role="list" class="link-card-grid">
-        {
-          blogs.map((blog) => (
-            <Card
-              id={blog.data.id}
-              title={blog.data.title}
-              date={blog.data.date}
-              image={blog.data.image}
-              tags={blog.data.tags}
-              mediaTransitionName={`media-image-${blog.data.id}`}
-            />
-          ))
-        }
-      </ul>
+<Layout title={`#${tag} · loong博客`} canonicalPath={`/tags/${encodeURIComponent(tag)}`}>
+  <main id="main-content">
+    <Header title="loong博客" active="tags" />
+    <div class="content-width tag-page">
+      <a class="back" href="/tags">← 所有标签</a>
+      <h1 class="page-title">#{tag}</h1>
+      <p class="page-intro">收集在“{tag}”标签下的全部博客。</p>
+      <div class="entries">
+        <EntryList entries={blogs} />
+      </div>
     </div>
     <Footer />
   </main>
 </Layout>
+
+<style>
+  .tag-page {
+    padding-top: 1rem;
+  }
+
+  .back {
+    color: var(--ink-muted);
+    display: inline-block;
+    font-size: 0.7rem;
+    margin-bottom: clamp(2rem, 5vw, 4rem);
+    text-decoration: none;
+  }
+
+  .entries {
+    margin-top: 2.8rem;
+  }
+</style>
