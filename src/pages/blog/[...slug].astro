@@ -3,7 +3,7 @@ import { getCollection, getEntry } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
-import { createExcerpt, getDateView } from '../../utils/blog';
+import { createExcerpt, getDateView, getReadingMinutes } from '../../utils/blog';
 
 export async function getStaticPaths() {
   const blogEntries = await getCollection('blogs');
@@ -19,16 +19,24 @@ const { Content } = await entry.render();
 const { id, title, image, tags, date, summary } = entry.data;
 const excerpt = createExcerpt(entry.body, summary, 150);
 const dateView = getDateView(date, id);
+const readingMinutes = getReadingMinutes(entry.body);
 ---
 
 <Layout title={`${title} · loong博客`} description={excerpt} canonicalPath={`/blog/${id}`}>
   <main id="main-content">
+    <div class="reading-progress" aria-hidden="true">
+      <span id="reading-progress-bar"></span>
+    </div>
     <Header title="loong博客" active="articles" />
+    <nav class="toc" id="toc" aria-label="文章目录" hidden>
+      <p class="toc-title">目录</p>
+      <ul id="toc-list" data-toc-list></ul>
+    </nav>
     <div class="reading-width">
       <a class="back-link" href="/blogs">← 返回文章集合</a>
 
       <header class="entry-hero">
-        <p class="page-kicker">{dateView.weekday} · {date}</p>
+        <p class="page-kicker">{dateView.weekday} · {date} · 约 {readingMinutes} 分钟阅读</p>
         <div class="article-mark" style={`--bgURL: url('/${image}');`} aria-hidden="true" transition:name={`article-mark-${id}`}>
           <span></span>
         </div>
@@ -36,6 +44,10 @@ const dateView = getDateView(date, id);
         <div class="tag-row">
           {tags.map((tag) => <a href={`/tags/${tag}`}>#{tag}</a>)}
         </div>
+        <details class="toc-mobile" id="toc-mobile" hidden>
+          <summary>目录</summary>
+          <ul id="toc-list-mobile" data-toc-list></ul>
+        </details>
       </header>
 
       <article class="journal-prose">
@@ -54,6 +66,112 @@ const dateView = getDateView(date, id);
 </Layout>
 
 <style is:global>
+  .reading-progress {
+    height: 3px;
+    left: 0;
+    position: fixed;
+    right: 0;
+    top: 0;
+    z-index: 60;
+  }
+
+  .reading-progress span {
+    background: linear-gradient(90deg, var(--clay), var(--clay-dark));
+    display: block;
+    height: 100%;
+    transition: width 80ms linear;
+    width: 0%;
+  }
+
+  .toc {
+    display: none;
+  }
+
+  @media (min-width: 90rem) {
+    .toc:not([hidden]) {
+      display: block;
+      left: calc(50% + (var(--content-width) / 2) + 2.5rem);
+      max-height: calc(100vh - 11rem);
+      overflow-y: auto;
+      position: fixed;
+      top: 8rem;
+      width: 13.5rem;
+    }
+  }
+
+  .toc-title {
+    color: var(--ink-muted);
+    font-size: 0.64rem;
+    font-weight: 800;
+    letter-spacing: 0.18em;
+    margin: 0 0 0.8rem;
+    text-transform: uppercase;
+  }
+
+  .toc ul,
+  .toc-mobile ul {
+    display: grid;
+    gap: 0.55rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-item a {
+    color: var(--ink-muted);
+    display: block;
+    font-size: 0.78rem;
+    line-height: 1.4;
+    text-decoration: none;
+    transition: color 160ms ease;
+  }
+
+  .toc-item.toc-sub a {
+    font-size: 0.72rem;
+    padding-left: 0.85rem;
+  }
+
+  .toc-item a:hover,
+  .toc-item a.is-active {
+    color: var(--clay-dark);
+  }
+
+  .toc-item a.is-active {
+    font-weight: 700;
+  }
+
+  .toc-mobile {
+    background: var(--surface-soft);
+    border: 1px solid var(--surface-card-border);
+    border-radius: 1rem;
+    margin: 1.5rem auto 0;
+    max-width: 30rem;
+    padding: 0.9rem 1.1rem;
+    text-align: left;
+  }
+
+  .toc-mobile summary {
+    color: var(--ink-soft);
+    cursor: pointer;
+    font-size: 0.78rem;
+    font-weight: 700;
+    list-style: none;
+  }
+
+  .toc-mobile summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .toc-mobile[open] summary {
+    margin-bottom: 0.7rem;
+  }
+
+  @media (min-width: 90rem) {
+    .toc-mobile {
+      display: none;
+    }
+  }
+
   .reading-width {
     margin: 0 auto;
     max-width: var(--content-width);
@@ -77,8 +195,8 @@ const dateView = getDateView(date, id);
 
   .article-mark {
     align-items: center;
-    background: rgba(255, 255, 255, 0.36);
-    border: 1px solid rgba(91, 73, 56, 0.08);
+    background: var(--surface-card);
+    border: 1px solid var(--surface-card-border);
     border-radius: 1.35rem;
     box-shadow: 0 12px 30px rgba(76, 59, 48, 0.06);
     display: flex;
@@ -217,7 +335,7 @@ const dateView = getDateView(date, id);
 
   .journal-prose ul > li::before {
     background: var(--clay);
-    border: 3px solid color-mix(in srgb, var(--paper) 72%, white);
+    border: 3px solid var(--surface-card);
     border-radius: 50%;
     box-shadow: 0 0 0 1px rgba(202, 112, 72, 0.24);
     content: '';
@@ -318,7 +436,7 @@ const dateView = getDateView(date, id);
   }
 
   .journal-prose kbd {
-    background: rgba(255, 255, 255, 0.45);
+    background: var(--surface-strong);
     border: 1px solid var(--line);
     border-bottom-width: 2px;
     border-radius: 0.35rem;
@@ -343,8 +461,8 @@ const dateView = getDateView(date, id);
   }
 
   .journal-prose .journal-references > li {
-    background: rgba(255, 255, 255, 0.32);
-    border: 1px solid rgba(87, 69, 52, 0.07);
+    background: var(--surface-subtle);
+    border: 1px solid var(--surface-card-border);
     border-radius: 0.9rem;
     counter-increment: reference-item;
     font-family: var(--font-sans);
@@ -357,7 +475,7 @@ const dateView = getDateView(date, id);
   }
 
   .journal-prose .journal-references > li:hover {
-    background: rgba(255, 255, 255, 0.52);
+    background: var(--surface-strong);
     border-color: rgba(202, 112, 72, 0.2);
     transform: translateX(2px);
   }
@@ -405,7 +523,7 @@ const dateView = getDateView(date, id);
   }
 
   .journal-prose .journal-callout {
-    background: rgba(255, 255, 255, 0.32);
+    background: var(--surface-subtle);
     border: 0;
     border-left: 3px solid var(--clay);
     border-radius: 0 1.2rem 1.2rem 0;
@@ -719,3 +837,75 @@ const dateView = getDateView(date, id);
     }
   }
 </style>
+
+<script>
+  function updateReadingProgress() {
+    const article = document.querySelector<HTMLElement>('.journal-prose');
+    const bar = document.getElementById('reading-progress-bar');
+    if (!article || !bar) return;
+
+    const rect = article.getBoundingClientRect();
+    const total = rect.height - window.innerHeight;
+    const scrolled = Math.min(Math.max(-rect.top, 0), Math.max(total, 1));
+    const percent = total > 0 ? (scrolled / total) * 100 : 100;
+    bar.style.width = `${percent}%`;
+  }
+
+  let tocObserver: IntersectionObserver | null = null;
+
+  function buildToc() {
+    const desktopNav = document.getElementById('toc');
+    const mobileNav = document.getElementById('toc-mobile');
+    if (!desktopNav || !mobileNav) return;
+
+    const headings = Array.from(
+      document.querySelectorAll<HTMLElement>('.journal-prose h2[id], .journal-prose h3[id]'),
+    );
+
+    tocObserver?.disconnect();
+
+    if (headings.length < 3) {
+      desktopNav.hidden = true;
+      mobileNav.hidden = true;
+      return;
+    }
+
+    const itemsHtml = headings
+      .map((heading) => {
+        const isSub = heading.tagName === 'H3';
+        const label = (heading.textContent ?? '').trim();
+        return `<li class="toc-item${isSub ? ' toc-sub' : ''}"><a href="#${heading.id}">${label}</a></li>`;
+      })
+      .join('');
+
+    desktopNav.hidden = false;
+    mobileNav.hidden = false;
+    const desktopList = document.getElementById('toc-list');
+    const mobileList = document.getElementById('toc-list-mobile');
+    if (desktopList) desktopList.innerHTML = itemsHtml;
+    if (mobileList) mobileList.innerHTML = itemsHtml;
+
+    tocObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          document.querySelectorAll('[data-toc-list] a').forEach((link) => link.classList.remove('is-active'));
+          document
+            .querySelectorAll(`[data-toc-list] a[href="#${CSS.escape(entry.target.id)}"]`)
+            .forEach((link) => link.classList.add('is-active'));
+        });
+      },
+      { rootMargin: '-15% 0px -70% 0px', threshold: 0 },
+    );
+    headings.forEach((heading) => tocObserver?.observe(heading));
+  }
+
+  document.addEventListener('astro:page-load', () => {
+    if (!document.querySelector('.journal-prose')) return;
+    updateReadingProgress();
+    buildToc();
+  });
+
+  window.addEventListener('scroll', updateReadingProgress, { passive: true });
+  window.addEventListener('resize', updateReadingProgress);
+</script>

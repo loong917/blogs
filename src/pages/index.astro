@@ -1,11 +1,11 @@
 ---
-import { getCollection } from 'astro:content';
-import Layout from '../layouts/Layout.astro';
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
-import EntryList from '../components/EntryList.astro';
+import { getCollection } from "astro:content";
+import Layout from "../layouts/Layout.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import EntryList from "../components/EntryList.astro";
 
-const blogs = await getCollection('blogs');
+const blogs = await getCollection("blogs");
 const sortedBlogs = blogs.sort((a, b) => b.data.id - a.data.id).slice(0, 9);
 ---
 
@@ -13,7 +13,6 @@ const sortedBlogs = blogs.sort((a, b) => b.data.id - a.data.id).slice(0, 9);
   <main id="main-content">
     <Header title="loong博客" active="latest" />
     <div class="content-width">
-
       <nav class="filter-row" aria-label="文章筛选">
         <a class="filter-pill active" href="/">最新记录</a>
         <a class="filter-pill" href="/tags/programming">programming</a>
@@ -33,7 +32,6 @@ const sortedBlogs = blogs.sort((a, b) => b.data.id - a.data.id).slice(0, 9);
 </Layout>
 
 <style>
-
   .collection-meta {
     color: var(--ink-muted);
     font-family: var(--font-sans);

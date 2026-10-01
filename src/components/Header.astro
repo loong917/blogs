@@ -18,6 +18,15 @@ const { title, active } = Astro.props;
     <a class:list={{ active: active === 'latest' }} aria-current={active === 'latest' ? 'page' : undefined} href="/">最新</a>
     <a class:list={{ active: active === 'articles' }} aria-current={active === 'articles' ? 'page' : undefined} href="/blogs">文章</a>
     <a class:list={{ active: active === 'tags' }} aria-current={active === 'tags' ? 'page' : undefined} href="/tags">标签</a>
+    <button type="button" class="theme-toggle" data-theme-toggle aria-label="切换深色/浅色模式">
+      <svg class="icon-sun" width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <circle cx="12" cy="12" r="4.4" stroke="currentColor" stroke-width="1.8" />
+        <path stroke="currentColor" stroke-width="1.8" stroke-linecap="round" d="M12 2.5v2.3M12 19.2v2.3M4.4 4.4l1.6 1.6M18 18l1.6 1.6M2.5 12h2.3M19.2 12h2.3M4.4 19.6 6 18M18 6l1.6-1.6" />
+      </svg>
+      <svg class="icon-moon" width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" d="M20.5 14.7A8.5 8.5 0 1 1 9.3 3.5a7 7 0 0 0 11.2 11.2Z" />
+      </svg>
+    </button>
   </nav>
 </header>
 
@@ -98,7 +107,7 @@ const { title, active } = Astro.props;
 
   nav a:hover,
   nav a.active {
-    background: rgba(255, 255, 255, 0.45);
+    background: var(--surface-soft-hover);
     color: var(--clay-dark);
   }
 
@@ -112,6 +121,39 @@ const { title, active } = Astro.props;
     position: absolute;
     transform: translateX(-50%);
     width: 0.9rem;
+  }
+
+  .theme-toggle {
+    align-items: center;
+    background: var(--surface-soft);
+    border: 1px solid var(--surface-card-border);
+    border-radius: 50%;
+    color: var(--ink-soft);
+    cursor: pointer;
+    display: inline-flex;
+    height: 2.75rem;
+    justify-content: center;
+    margin-left: 0.25rem;
+    transition: background-color 160ms ease, color 160ms ease, transform 160ms ease;
+    width: 2.75rem;
+  }
+
+  .theme-toggle:hover {
+    background: var(--surface-soft-hover);
+    color: var(--clay-dark);
+    transform: translateY(-1px);
+  }
+
+  .theme-toggle .icon-moon {
+    display: none;
+  }
+
+  :global([data-theme='dark']) .theme-toggle .icon-sun {
+    display: none;
+  }
+
+  :global([data-theme='dark']) .theme-toggle .icon-moon {
+    display: block;
   }
 
   @media (max-width: 40rem) {
@@ -135,6 +177,12 @@ const { title, active } = Astro.props;
 
     nav a.active::after {
       bottom: 0.2rem;
+    }
+
+    .theme-toggle {
+      height: 2.5rem;
+      margin-left: 0.1rem;
+      width: 2.5rem;
     }
   }
 

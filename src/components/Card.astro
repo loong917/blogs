@@ -8,6 +8,7 @@ interface Props {
   tags: string[];
   image: string;
   summary?: string;
+  readingMinutes?: number;
 }
 
 const {
@@ -17,12 +18,13 @@ const {
   image,
   tags,
   summary = '打开这篇记录，继续阅读完整内容。',
+  readingMinutes,
 } = Astro.props;
 
 const dateView = getDateView(date, id);
 ---
 
-<article class="entry-card">
+<article class="entry-card" data-reveal>
   <div class="entry-date" aria-label={date}>
     <strong>{dateView.day}</strong>
     <span>{dateView.weekday}</span>
@@ -36,6 +38,7 @@ const dateView = getDateView(date, id);
     <div class="entry-footer">
       <span class="entry-icon" style={`--bgURL: url('/${image}');`} transition:name={`article-mark-${id}`}></span>
       <span>{tags.slice(0, 3).map((tag) => `#${tag}`).join('　')}</span>
+      {readingMinutes && <span class="entry-reading-time">{readingMinutes} 分钟</span>}
       <span class="arrow" aria-hidden="true">↗</span>
     </div>
   </a>
@@ -74,22 +77,22 @@ const dateView = getDateView(date, id);
   }
 
   .entry-link {
-    background: color-mix(in srgb, var(--paper) 82%, white);
-    border: 1px solid rgba(78, 67, 53, 0.05);
+    background: var(--surface-card);
+    border: 1px solid var(--surface-card-border);
     border-radius: 1.65rem;
-    box-shadow: 0 12px 35px rgba(75, 58, 41, 0.035);
+    box-shadow: var(--shadow-card);
     color: var(--ink);
     display: block;
     min-width: 0;
     padding: 1.25rem 1.35rem 1.15rem;
     text-decoration: none;
-    transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+    transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease, background-color var(--theme-toggle-transition);
   }
 
   .entry-link:hover,
   .entry-link:focus-visible {
     border-color: rgba(202, 112, 72, 0.3);
-    box-shadow: 0 16px 44px rgba(75, 58, 41, 0.08);
+    box-shadow: var(--shadow-card-hover);
     outline: none;
     transform: translateY(-3px);
   }
@@ -108,7 +111,7 @@ const dateView = getDateView(date, id);
   }
 
   .entry-summary {
-    color: #514940;
+    color: var(--ink-soft);
     display: -webkit-box;
     font-family: var(--font-sans);
     font-size: 0.86rem;
@@ -131,6 +134,13 @@ const dateView = getDateView(date, id);
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+  }
+
+  .entry-reading-time {
+    background: var(--surface-soft);
+    border-radius: 999px;
+    flex-shrink: 0;
+    padding: 0.2rem 0.5rem;
   }
 
   .entry-icon {
@@ -156,6 +166,10 @@ const dateView = getDateView(date, id);
     .entry-link {
       border-radius: 1.35rem;
       padding: 1.1rem;
+    }
+
+    .entry-reading-time {
+      display: none;
     }
   }
 

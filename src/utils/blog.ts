@@ -31,6 +31,22 @@ export function getDateView(date: string, id?: number) {
   };
 }
 
+export function getReadingMinutes(body: string) {
+  const imageCount = (body.match(/!\[[^\]]*\]\([^)]*\)/g) ?? []).length;
+  const plain = body
+    .replace(/```[\s\S]*?```/g, '')
+    .replace(/`[^`]*`/g, '')
+    .replace(/!\[[^\]]*\]\([^)]*\)/g, '')
+    .replace(/\[([^\]]*)\]\([^)]*\)/g, '$1')
+    .replace(/[#>*_~|=-]/g, '');
+
+  const chineseChars = (plain.match(/[\u4e00-\u9fff]/g) ?? []).length;
+  const otherWords = (plain.replace(/[\u4e00-\u9fff]/g, ' ').match(/[A-Za-z0-9]+/g) ?? []).length;
+
+  const minutes = chineseChars / 400 + otherWords / 200 + imageCount * (12 / 60);
+  return Math.max(1, Math.round(minutes));
+}
+
 export function createExcerpt(body: string, summary?: string, maxLength = 96) {
   if (summary) return summary;
 

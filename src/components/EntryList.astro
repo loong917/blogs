@@ -1,6 +1,6 @@
 ---
 import Card from './Card.astro';
-import { createExcerpt, getDateView } from '../utils/blog';
+import { createExcerpt, getDateView, getReadingMinutes } from '../utils/blog';
 import type { BlogData } from '../utils/blog';
 
 interface EntryItem {
@@ -29,6 +29,7 @@ let currentMonth = '';
           <Card
             {...entry.data}
             summary={createExcerpt(entry.body, entry.data.summary)}
+            readingMinutes={getReadingMinutes(entry.body)}
           />
         </div>
       );
