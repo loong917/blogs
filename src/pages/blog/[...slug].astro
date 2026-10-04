@@ -978,9 +978,13 @@ const readingMinutes = getReadingMinutes(entry.body);
 
     tocObserver?.disconnect();
 
-    if (headings.length < 3) {
+    if (headings.length < 2) {
       desktopNav.hidden = true;
       mobileNav.hidden = true;
+      document.getElementById('toc-list')?.replaceChildren();
+      document.getElementById('toc-list-mobile')?.replaceChildren();
+      const mobileCount = document.getElementById('toc-mobile-count');
+      if (mobileCount) mobileCount.textContent = '';
       return;
     }
 
