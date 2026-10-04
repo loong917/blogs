@@ -48,13 +48,23 @@ let currentMonth = '';
   }
 
   .month-label {
+    align-items: center;
     color: var(--ink-muted);
+    display: flex;
     font-family: var(--font-sans);
     font-size: 0.72rem;
     font-weight: 700;
     letter-spacing: 0.22em;
     margin: 1.8rem 0 0.35rem;
     text-transform: uppercase;
+  }
+
+  .month-label::after {
+    background: linear-gradient(90deg, var(--line), transparent);
+    content: '';
+    flex: 1;
+    height: 1px;
+    margin-left: 1rem;
   }
 
   .entry-group:first-child .month-label {

@@ -1,7 +1,11 @@
+---
+const currentYear = new Date().getFullYear();
+---
+
 <footer>
-  <span>LOONG'S BLOGS</span>
-  <span>Slow is smooth, smooth is fast.</span>
-  <span>© 2026</span>
+  <a class="footer-brand" href="/" aria-label="返回首页"><i aria-hidden="true">L</i><span>LOONG'S BLOGS</span></a>
+  <span class="footer-quote">Slow is smooth, smooth is fast.</span>
+  <span>© {currentYear}</span>
 </footer>
 
 <style>
@@ -15,8 +19,29 @@
     letter-spacing: 0.08em;
     margin: 4.5rem auto 0;
     max-width: var(--content-width);
-    padding: 1.5rem 0 0.35rem;
+    padding: 1.5rem 0 0.5rem;
     width: 100%;
+  }
+
+  .footer-brand {
+    align-items: center;
+    display: inline-flex;
+    gap: 0.55rem;
+    text-decoration: none;
+  }
+
+  .footer-brand i {
+    align-items: center;
+    background: var(--accent-soft);
+    border-radius: 50%;
+    color: var(--clay-dark);
+    display: inline-flex;
+    font-family: var(--font-serif);
+    font-size: 0.75rem;
+    font-style: normal;
+    height: 1.7rem;
+    justify-content: center;
+    width: 1.7rem;
   }
 
   @media (max-width: 640px) {
@@ -26,7 +51,7 @@
       margin-top: 3.5rem;
     }
 
-    footer span:nth-child(2) {
+    .footer-quote {
       display: none;
     }
   }

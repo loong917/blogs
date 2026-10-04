@@ -68,7 +68,8 @@ const canonicalURL = new URL(canonicalPath, 'https://loongzxl.com');
     return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
   }
 
-  function applyTheme(theme: 'light' | 'dark') {
+  function applyTheme(theme: 'light' | 'dark', animate = false) {
+    if (animate) document.documentElement.dataset.themeAnimating = 'true';
     document.documentElement.dataset.theme = theme;
     document.documentElement.style.colorScheme = theme;
     const meta = document.getElementById('meta-theme-color');
@@ -76,6 +77,9 @@ const canonicalURL = new URL(canonicalPath, 'https://loongzxl.com');
     document.querySelectorAll<HTMLButtonElement>('[data-theme-toggle]').forEach((button) => {
       button.setAttribute('aria-label', theme === 'dark' ? '切换到浅色模式' : '切换到深色模式');
     });
+    if (animate) {
+      window.setTimeout(() => delete document.documentElement.dataset.themeAnimating, 220);
+    }
   }
 
   function bindThemeToggle() {
@@ -83,7 +87,7 @@ const canonicalURL = new URL(canonicalPath, 'https://loongzxl.com');
       button.addEventListener('click', () => {
         const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
         localStorage.setItem('theme', next);
-        applyTheme(next);
+        applyTheme(next, true);
       });
     });
   }
@@ -114,10 +118,16 @@ const canonicalURL = new URL(canonicalPath, 'https://loongzxl.com');
 
   function bindBackToTop() {
     const button = document.getElementById('back-to-top');
+    if (!button || button.dataset.bound) return;
+    button.dataset.bound = 'true';
     button?.addEventListener('click', () => {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     });
   }
+
+  document.addEventListener('astro:after-swap', () => {
+    applyTheme(getStoredTheme());
+  });
 
   document.addEventListener('astro:page-load', () => {
     applyTheme(getStoredTheme());
@@ -151,8 +161,13 @@ const canonicalURL = new URL(canonicalPath, 'https://loongzxl.com');
     --clay: #ca7048;
     --clay-dark: #995038;
     --content-width: 48.75rem;
+    --collection-offset: clamp(3rem, 7vw, 5rem);
     --page-gutter: clamp(1rem, 4vw, 3.5rem);
     --section-space: clamp(2rem, 5vw, 4rem);
+    --radius-sm: 0.75rem;
+    --radius-md: 1.15rem;
+    --radius-lg: 1.65rem;
+    --radius-xl: 2.25rem;
     --font-serif: Georgia, 'Noto Serif SC', 'Songti SC', serif;
     --font-sans: Inter, 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif;
 
@@ -165,7 +180,14 @@ const canonicalURL = new URL(canonicalPath, 'https://loongzxl.com');
     --shadow-card: 0 12px 35px rgba(75, 58, 41, 0.035);
     --shadow-card-hover: 0 16px 44px rgba(75, 58, 41, 0.08);
     --shadow-pop: 0 16px 42px rgba(61, 48, 37, 0.12);
+    --shadow-float: 0 24px 70px rgba(75, 58, 41, 0.1);
+    --accent-soft: color-mix(in srgb, var(--clay) 12%, transparent);
+    --accent-border: color-mix(in srgb, var(--clay) 24%, transparent);
 
+    --theme-toggle-transition: 0ms;
+  }
+
+  :root[data-theme-animating] {
     --theme-toggle-transition: 220ms ease;
   }
 
@@ -187,6 +209,9 @@ const canonicalURL = new URL(canonicalPath, 'https://loongzxl.com');
     --shadow-card: 0 12px 30px rgba(0, 0, 0, 0.35);
     --shadow-card-hover: 0 18px 44px rgba(0, 0, 0, 0.45);
     --shadow-pop: 0 18px 40px rgba(0, 0, 0, 0.5);
+    --shadow-float: 0 28px 80px rgba(0, 0, 0, 0.5);
+    --accent-soft: color-mix(in srgb, var(--clay) 14%, transparent);
+    --accent-border: color-mix(in srgb, var(--clay) 28%, transparent);
   }
 
   * {
@@ -203,7 +228,10 @@ const canonicalURL = new URL(canonicalPath, 'https://loongzxl.com');
   }
 
   body {
-    background: var(--paper);
+    background:
+      radial-gradient(circle at 12% 8%, var(--accent-soft), transparent 25rem),
+      radial-gradient(circle at 88% 28%, color-mix(in srgb, var(--ink-muted) 8%, transparent), transparent 28rem),
+      var(--paper);
     margin: 0;
     min-height: 100vh;
     overflow-x: clip;
@@ -279,24 +307,22 @@ const canonicalURL = new URL(canonicalPath, 'https://loongzxl.com');
   }
 
   ::view-transition-old(root) {
-    animation: 180ms ease-out both journal-page-out;
+    animation: 140ms ease-out both journal-page-out;
   }
 
   ::view-transition-new(root) {
-    animation: 260ms ease-out both journal-page-in;
+    animation: 180ms ease-out both journal-page-in;
   }
 
   @keyframes journal-page-out {
     to {
       opacity: 0;
-      transform: translateY(-4px);
     }
   }
 
   @keyframes journal-page-in {
     from {
       opacity: 0;
-      transform: translateY(8px);
     }
   }
 
@@ -323,7 +349,7 @@ const canonicalURL = new URL(canonicalPath, 'https://loongzxl.com');
   }
 
   main {
-    background: var(--paper);
+    background: transparent;
     border: 0;
     border-radius: 0;
     box-shadow: none;

@@ -34,8 +34,37 @@ function markReferenceSections(parent) {
   });
 }
 
+function removeInlineTableOfContents(parent) {
+  if (!Array.isArray(parent.children)) return;
+
+  for (let index = 0; index < parent.children.length; index += 1) {
+    const node = parent.children[index];
+    if (node.type !== 'element' || !/^h[1-6]$/.test(node.tagName)) continue;
+    if (!/^(目录|文章目录|table of contents)$/i.test(nodeText(node).trim())) continue;
+
+    let endIndex = index + 1;
+    while (
+      endIndex < parent.children.length &&
+      parent.children[endIndex].type === 'text' &&
+      !parent.children[endIndex].value.trim()
+    ) {
+      endIndex += 1;
+    }
+
+    const nextNode = parent.children[endIndex];
+    if (nextNode?.type === 'element' && (nextNode.tagName === 'ul' || nextNode.tagName === 'ol')) {
+      endIndex += 1;
+    }
+
+    parent.children.splice(index, endIndex - index);
+    index -= 1;
+  }
+}
+
 function transformChildren(parent) {
   if (!Array.isArray(parent.children)) return;
+
+  removeInlineTableOfContents(parent);
 
   parent.children = parent.children.map((node) => {
     if (node.type !== 'element') return node;

@@ -53,7 +53,7 @@ const dateView = getDateView(date, id);
 
   .entry-date {
     color: var(--ink-muted);
-    padding-top: 0.7rem;
+    padding-top: 1rem;
     text-align: center;
   }
 
@@ -84,7 +84,9 @@ const dateView = getDateView(date, id);
     color: var(--ink);
     display: block;
     min-width: 0;
+    overflow: hidden;
     padding: 1.25rem 1.35rem 1.15rem;
+    position: relative;
     text-decoration: none;
     transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease, background-color var(--theme-toggle-transition);
   }
@@ -95,6 +97,24 @@ const dateView = getDateView(date, id);
     box-shadow: var(--shadow-card-hover);
     outline: none;
     transform: translateY(-3px);
+  }
+
+  .entry-link::before {
+    background: linear-gradient(180deg, var(--clay), color-mix(in srgb, var(--clay) 20%, transparent));
+    border-radius: 99px;
+    content: '';
+    inset: 1.25rem auto 1.25rem 0;
+    opacity: 0;
+    position: absolute;
+    transform: scaleY(0.35);
+    transition: opacity 180ms ease, transform 180ms ease;
+    width: 2px;
+  }
+
+  .entry-link:hover::before,
+  .entry-link:focus-visible::before {
+    opacity: 1;
+    transform: scaleY(1);
   }
 
   .entry-footer {
@@ -152,9 +172,23 @@ const dateView = getDateView(date, id);
   }
 
   .arrow {
+    align-items: center;
+    background: var(--accent-soft);
+    border-radius: 50%;
     color: var(--clay);
+    display: inline-flex;
     font-size: 1rem;
+    height: 2rem;
+    justify-content: center;
     margin-left: auto;
+    transition: background-color 180ms ease, color 180ms ease, transform 180ms ease;
+    width: 2rem;
+  }
+
+  .entry-link:hover .arrow {
+    background: var(--clay);
+    color: #fff8ee;
+    transform: rotate(8deg);
   }
 
   @media (max-width: 40rem) {
