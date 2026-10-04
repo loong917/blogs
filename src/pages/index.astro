@@ -13,13 +13,13 @@ const sortedBlogs = blogs.sort((a, b) => b.data.id - a.data.id).slice(0, 9);
   <main id="main-content">
     <Header title="loong博客" active="latest" />
     <div class="content-width">
-      <section class="home-hero" aria-labelledby="home-title">
+      <section class="collection-hero" aria-labelledby="home-title">
         <h1 id="home-title" class="page-title">最新文章</h1>
         <p class="page-intro">记录一路所见，记录一切美好。</p>
       </section>
 
       <nav class="filter-row" aria-label="文章筛选">
-        <a class="filter-pill active" href="/">最新记录</a>
+        <a class="filter-pill active" href="/" aria-current="page">最新记录</a>
         <a class="filter-pill" href="/tags/programming">programming</a>
         <a class="filter-pill" href="/tags/wikipedia">wikipedia</a>
         <a class="filter-pill" href="/blogs">全部文章</a>
@@ -37,10 +37,6 @@ const sortedBlogs = blogs.sort((a, b) => b.data.id - a.data.id).slice(0, 9);
 </Layout>
 
 <style>
-  .home-hero {
-    padding: var(--collection-offset) 0 clamp(2rem, 4vw, 3rem);
-  }
-
   .more-link {
     align-items: center;
     border-top: 1px solid var(--line);

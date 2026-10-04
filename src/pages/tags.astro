@@ -21,8 +21,10 @@ const tags = tagCounts.map((entry) => ({
   <main id="main-content">
     <Header title="loong博客" active="tags" />
     <div class="content-width tags-page">
-      <h1 class="page-title">所有标签</h1>
-      <p class="page-intro">从主题进入内容，找到长期积累的知识脉络。</p>
+      <section class="collection-hero" aria-labelledby="tags-title">
+        <h1 class="page-title" id="tags-title">所有标签</h1>
+        <p class="page-intro">从主题进入内容，找到长期积累的知识脉络。</p>
+      </section>
 
       <div class="tag-cloud">
         {
@@ -41,10 +43,6 @@ const tags = tagCounts.map((entry) => ({
 </Layout>
 
 <style>
-  .tags-page {
-    padding-top: var(--collection-offset);
-  }
-
   .tag-cloud {
     display: grid;
     gap: 0.8rem;

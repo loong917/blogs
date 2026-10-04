@@ -26,9 +26,11 @@ const tag = Astro.params.tag ?? '';
   <main id="main-content">
     <Header title="loong博客" active="tags" />
     <div class="content-width tag-page">
-      <a class="back" href="/tags">← 所有标签</a>
-      <h1 class="page-title">#{tag}</h1>
-      <p class="page-intro">收集在“{tag}”标签下的全部博客。</p>
+      <section class="collection-hero" aria-labelledby="tag-title">
+        <h1 class="page-title" id="tag-title">#{tag}</h1>
+        <p class="page-intro">收集在“{tag}”标签下的全部博客。</p>
+        <a class="back" href="/tags">← 返回所有标签</a>
+      </section>
       <div class="entries">
         <EntryList entries={blogs} />
       </div>
@@ -38,15 +40,11 @@ const tag = Astro.params.tag ?? '';
 </Layout>
 
 <style>
-  .tag-page {
-    padding-top: 1rem;
-  }
-
   .back {
     color: var(--ink-muted);
     display: inline-block;
     font-size: 0.7rem;
-    margin-bottom: clamp(2rem, 5vw, 4rem);
+    margin-top: 1rem;
     text-decoration: none;
   }
 

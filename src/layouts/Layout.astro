@@ -14,8 +14,14 @@ const canonicalURL = new URL(canonicalPath, 'https://loongzxl.com');
 <!doctype html>
 <html lang="zh-CN">
   <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content={description} />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#f3ecdf" id="meta-theme-color" />
     <script is:inline>
       (function () {
+        document.documentElement.classList.add('js');
+
         try {
           var stored = localStorage.getItem('theme');
           var theme = stored === 'light' || stored === 'dark'
@@ -23,13 +29,13 @@ const canonicalURL = new URL(canonicalPath, 'https://loongzxl.com');
             : (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
           document.documentElement.dataset.theme = theme;
           document.documentElement.style.colorScheme = theme;
+          document.getElementById('meta-theme-color')?.setAttribute(
+            'content',
+            theme === 'dark' ? '#1c1712' : '#f3ecdf',
+          );
         } catch (_) {}
       })();
     </script>
-    <meta charset="UTF-8" />
-    <meta name="description" content={description} />
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <meta name="theme-color" content="#f3ecdf" id="meta-theme-color" />
     <meta name="color-scheme" content="light dark" />
     <meta name="robots" content="index, follow" />
     <meta property="og:locale" content="zh_CN" />
@@ -84,6 +90,9 @@ const canonicalURL = new URL(canonicalPath, 'https://loongzxl.com');
 
   function bindThemeToggle() {
     document.querySelectorAll<HTMLButtonElement>('[data-theme-toggle]').forEach((button) => {
+      if (button.dataset.themeBound) return;
+      button.dataset.themeBound = 'true';
+
       button.addEventListener('click', () => {
         const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
         localStorage.setItem('theme', next);
@@ -125,6 +134,10 @@ const canonicalURL = new URL(canonicalPath, 'https://loongzxl.com');
     });
   }
 
+  function updateBackToTop() {
+    document.getElementById('back-to-top')?.classList.toggle('is-visible', window.scrollY > 480);
+  }
+
   document.addEventListener('astro:after-swap', () => {
     applyTheme(getStoredTheme());
   });
@@ -134,6 +147,7 @@ const canonicalURL = new URL(canonicalPath, 'https://loongzxl.com');
     bindThemeToggle();
     bindRevealObserver();
     bindBackToTop();
+    updateBackToTop();
   });
 
   let ticking = false;
@@ -143,7 +157,7 @@ const canonicalURL = new URL(canonicalPath, 'https://loongzxl.com');
       if (ticking) return;
       ticking = true;
       requestAnimationFrame(() => {
-        document.getElementById('back-to-top')?.classList.toggle('is-visible', window.scrollY > 480);
+        updateBackToTop();
         ticking = false;
       });
     },
@@ -254,12 +268,17 @@ const canonicalURL = new URL(canonicalPath, 'https://loongzxl.com');
   }
 
   [data-reveal] {
+    opacity: 1;
+    transform: none;
+  }
+
+  .js [data-reveal] {
     opacity: 0;
     transform: translateY(14px);
     transition: opacity 560ms ease, transform 560ms ease;
   }
 
-  [data-reveal].is-visible {
+  .js [data-reveal].is-visible {
     opacity: 1;
     transform: translateY(0);
   }
@@ -395,6 +414,10 @@ const canonicalURL = new URL(canonicalPath, 'https://loongzxl.com');
     line-height: 1.75;
     margin: 0.9rem 0 0;
     max-width: 38rem;
+  }
+
+  .collection-hero {
+    padding: var(--collection-offset) 0 clamp(2rem, 4vw, 3rem);
   }
 
   .content-width {

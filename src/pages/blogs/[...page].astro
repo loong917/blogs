@@ -21,10 +21,12 @@ const { page } = Astro.props;
   <main id="main-content">
     <Header title="loong博客" active="articles" />
     <div class="content-width archive">
-      <h1 class="page-title">所有文章</h1>
-      <p class="page-intro">按时间回看写下的技术笔记、知识整理与旅途见闻。</p>
+      <section class="collection-hero" aria-labelledby="archive-title">
+        <h1 class="page-title" id="archive-title">所有文章</h1>
+        <p class="page-intro">按时间回看写下的技术笔记、知识整理与旅途见闻。</p>
+      </section>
       <nav class="filter-row" aria-label="归档导航">
-        <a class="filter-pill active" href="/blogs">全部</a>
+        <a class="filter-pill active" href="/blogs" aria-current="page">全部</a>
         <a class="filter-pill" href="/tags">按标签查看</a>
         <span class="entry-total">共 {page.total} 篇</span>
       </nav>
@@ -36,10 +38,6 @@ const { page } = Astro.props;
 </Layout>
 
 <style>
-  .archive {
-    padding-top: var(--collection-offset);
-  }
-
   .entry-total {
     align-self: center;
     color: var(--ink-muted);

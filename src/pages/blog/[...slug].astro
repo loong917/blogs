@@ -49,8 +49,11 @@ const readingMinutes = getReadingMinutes(entry.body);
       </header>
 
       <nav class="toc-mobile" id="toc-mobile" aria-label="本文目录" hidden>
-        <span>本文目录</span>
-        <ul id="toc-list-mobile" data-toc-list></ul>
+        <div class="toc-mobile-heading">
+          <strong>目录</strong>
+          <small id="toc-mobile-count"></small>
+        </div>
+        <ol id="toc-list-mobile" data-toc-list></ol>
       </nav>
 
       <article class="journal-prose">
@@ -162,52 +165,90 @@ const readingMinutes = getReadingMinutes(entry.body);
   }
 
   .toc-mobile {
-    border-bottom: 1px solid var(--line);
     display: grid;
-    gap: 0.75rem;
+    gap: 0.7rem;
     margin-top: 1.5rem;
-    padding: 0 0 1rem;
   }
 
-  .toc-mobile > span {
-    color: var(--ink-muted);
-    font-size: 0.62rem;
-    font-weight: 800;
-    letter-spacing: 0.16em;
-  }
-
-  .toc-mobile ul {
+  .toc-mobile-heading {
+    align-items: baseline;
     display: flex;
-    gap: 0.5rem;
-    margin-inline: calc(var(--page-gutter) * -1);
-    overflow-x: auto;
-    overscroll-behavior-inline: contain;
-    padding: 0 var(--page-gutter) 0.25rem;
-    scrollbar-width: none;
+    min-height: 1.5rem;
   }
 
-  .toc-mobile ul::-webkit-scrollbar {
-    display: none;
+  .toc-mobile-heading strong {
+    color: var(--ink);
+    font-family: var(--font-serif);
+    font-size: 0.96rem;
+  }
+
+  .toc-mobile-heading small {
+    color: var(--ink-muted);
+    font-size: 0.7rem;
+    margin-left: auto;
+  }
+
+  .toc-mobile ol {
+    counter-reset: toc-item;
+    display: grid;
+    gap: 0.5rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    list-style: none;
+    margin: 0;
+    padding: 0;
   }
 
   .toc-mobile .toc-item {
-    flex: 0 0 auto;
+    counter-increment: toc-item;
+    min-width: 0;
   }
 
   .toc-mobile .toc-item a,
   .toc-mobile .toc-item.toc-sub a {
+    align-items: start;
     background: var(--surface-soft);
     border: 1px solid var(--surface-card-border);
-    border-radius: 999px;
-    font-size: 0.74rem;
-    padding: 0.6rem 0.85rem;
-    white-space: nowrap;
+    border-radius: 0.7rem;
+    color: var(--ink-soft);
+    display: grid;
+    font-size: 0.76rem;
+    gap: 0.5rem;
+    grid-template-columns: auto minmax(0, 1fr);
+    line-height: 1.45;
+    min-height: 3.25rem;
+    padding: 0.7rem;
+    white-space: normal;
+  }
+
+  .toc-mobile .toc-item a::before {
+    color: var(--ink-muted);
+    content: counter(toc-item, decimal-leading-zero);
+    font-size: 0.6rem;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.04em;
+    line-height: 1.7;
+  }
+
+  .toc-mobile .toc-item.toc-sub a {
+    font-size: 0.72rem;
   }
 
   .toc-mobile .toc-item a:hover,
   .toc-mobile .toc-item a.is-active {
     background: var(--accent-soft);
-    border-color: color-mix(in srgb, var(--clay) 45%, var(--surface-card-border));
+    border-color: color-mix(in srgb, var(--clay) 52%, var(--surface-card-border));
+    color: var(--clay-dark);
+  }
+
+  .toc-mobile .toc-item a.is-active::before {
+    color: var(--clay);
+    font-weight: 800;
+  }
+
+  @media (max-width: 25rem) {
+    .toc-mobile ol {
+      grid-template-columns: 1fr;
+    }
   }
 
   @media (min-width: 80rem) {
@@ -947,8 +988,10 @@ const readingMinutes = getReadingMinutes(entry.body);
     mobileNav.hidden = false;
     const desktopList = document.getElementById('toc-list');
     const mobileList = document.getElementById('toc-list-mobile');
+    const mobileCount = document.getElementById('toc-mobile-count');
     desktopList?.replaceChildren(...headings.map(createTocItem));
     mobileList?.replaceChildren(...headings.map(createTocItem));
+    if (mobileCount) mobileCount.textContent = `${headings.length} 节`;
 
     document.querySelectorAll<HTMLAnchorElement>('[data-toc-list] a').forEach((link) => {
       link.addEventListener('click', (event) => {
@@ -965,7 +1008,6 @@ const readingMinutes = getReadingMinutes(entry.body);
         });
         window.history.replaceState(null, '', `#${encodeURIComponent(id)}`);
 
-        if (mobileNav instanceof HTMLDetailsElement) mobileNav.open = false;
       });
     });
 
