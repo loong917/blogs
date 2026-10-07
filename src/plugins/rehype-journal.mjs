@@ -6,6 +6,11 @@ function addClass(node, className) {
     : [current, className];
 }
 
+function hasClass(node, className) {
+  const current = node.properties?.className ?? [];
+  return Array.isArray(current) ? current.includes(className) : current === className;
+}
+
 function nodeText(node) {
   if (node.type === 'text') return node.value;
   return (node.children ?? []).map(nodeText).join('');
@@ -61,10 +66,40 @@ function removeInlineTableOfContents(parent) {
   }
 }
 
+function decorateList(list) {
+  if (hasClass(list, 'journal-references') || hasClass(list, 'contains-task-list')) return;
+
+  const ordered = list.tagName === 'ol';
+  addClass(list, 'journal-list');
+  addClass(list, ordered ? 'journal-list-ordered' : 'journal-list-unordered');
+
+  list.children = (list.children ?? []).map((item) => {
+    if (item.type !== 'element' || item.tagName !== 'li' || hasClass(item, 'task-list-item')) return item;
+
+    addClass(item, 'journal-list-item');
+    item.children = [
+      {
+        type: 'element',
+        tagName: 'span',
+        properties: { className: ['journal-list-marker'], ariaHidden: 'true' },
+        children: [],
+      },
+      {
+        type: 'element',
+        tagName: 'div',
+        properties: { className: ['journal-list-content'] },
+        children: item.children ?? [],
+      },
+    ];
+    return item;
+  });
+}
+
 function transformChildren(parent) {
   if (!Array.isArray(parent.children)) return;
 
   removeInlineTableOfContents(parent);
+  markReferenceSections(parent);
 
   parent.children = parent.children.map((node) => {
     if (node.type !== 'element') return node;
@@ -95,6 +130,8 @@ function transformChildren(parent) {
     }
 
     transformChildren(node);
+
+    if (node.tagName === 'ul' || node.tagName === 'ol') decorateList(node);
 
     if (
       node.tagName === 'p' &&
@@ -128,8 +165,6 @@ function transformChildren(parent) {
 
     return node;
   });
-
-  markReferenceSections(parent);
 }
 
 export default function rehypeJournal() {

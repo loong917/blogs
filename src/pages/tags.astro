@@ -61,7 +61,7 @@ const tags = tagCounts.map((entry) => ({
     padding: 1.2rem;
     position: relative;
     text-decoration: none;
-    transition: background-color 160ms ease, transform 160ms ease, border-color 160ms ease;
+    transition: background-color var(--motion-fast) var(--ease-standard), transform var(--motion-fast) var(--ease-standard), border-color var(--motion-fast) var(--ease-standard);
   }
 
   .tag-cloud a:hover {
@@ -81,7 +81,7 @@ const tags = tagCounts.map((entry) => ({
     position: absolute;
     transform: scaleX(0);
     transform-origin: left;
-    transition: opacity 180ms ease, transform 180ms ease;
+    transition: opacity var(--motion-base) var(--ease-standard), transform var(--motion-base) var(--ease-standard);
     width: 2.5rem;
   }
 

@@ -111,15 +111,6 @@ const readingMinutes = getReadingMinutes(entry.body);
     margin-bottom: 0.75rem;
   }
 
-  .toc-heading span {
-    color: var(--ink-muted);
-    display: block;
-    font-size: 0.58rem;
-    font-weight: 800;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-  }
-
   .toc-heading strong {
     color: var(--ink);
     display: block;
@@ -128,8 +119,7 @@ const readingMinutes = getReadingMinutes(entry.body);
     margin-top: 0.25rem;
   }
 
-  .toc ul,
-  .toc-mobile ul {
+  .toc ul {
     display: grid;
     gap: 0.55rem;
     list-style: none;
@@ -146,7 +136,7 @@ const readingMinutes = getReadingMinutes(entry.body);
     line-height: 1.4;
     padding: 0.38rem 0.55rem 0.38rem 0.7rem;
     text-decoration: none;
-    transition: background-color 160ms ease, border-color 160ms ease, color 160ms ease;
+    transition: background-color var(--motion-fast) var(--ease-standard), border-color var(--motion-fast) var(--ease-standard), color var(--motion-fast) var(--ease-standard);
   }
 
   .toc-item.toc-sub a {
@@ -205,7 +195,7 @@ const readingMinutes = getReadingMinutes(entry.body);
 
   .toc-mobile .toc-item a,
   .toc-mobile .toc-item.toc-sub a {
-    align-items: start;
+    align-items: center;
     background: var(--surface-soft);
     border: 1px solid var(--surface-card-border);
     border-radius: 0.7rem;
@@ -217,16 +207,26 @@ const readingMinutes = getReadingMinutes(entry.body);
     line-height: 1.45;
     min-height: 3.25rem;
     padding: 0.7rem;
+    transition: background-color var(--motion-fast) var(--ease-standard), border-color var(--motion-fast) var(--ease-standard), box-shadow var(--motion-fast) var(--ease-standard), color var(--motion-fast) var(--ease-standard), transform var(--motion-fast) var(--ease-standard);
     white-space: normal;
   }
 
   .toc-mobile .toc-item a::before {
+    align-items: center;
     color: var(--ink-muted);
     content: counter(toc-item, decimal-leading-zero);
+    display: flex;
     font-size: 0.6rem;
     font-variant-numeric: tabular-nums;
+    height: 1.45rem;
+    justify-content: center;
     letter-spacing: 0.04em;
-    line-height: 1.7;
+    line-height: 1.45;
+  }
+
+  .toc-mobile .toc-item-label {
+    display: block;
+    line-height: 1.45;
   }
 
   .toc-mobile .toc-item.toc-sub a {
@@ -238,6 +238,14 @@ const readingMinutes = getReadingMinutes(entry.body);
     background: var(--accent-soft);
     border-color: color-mix(in srgb, var(--clay) 52%, var(--surface-card-border));
     color: var(--clay-dark);
+  }
+
+  .toc-mobile .toc-item a:hover {
+    transform: translateY(-1px);
+  }
+
+  .toc-mobile .toc-item a.is-active {
+    box-shadow: 0 0.45rem 1.1rem rgba(153, 80, 56, 0.1);
   }
 
   .toc-mobile .toc-item a.is-active::before {
@@ -315,6 +323,52 @@ const readingMinutes = getReadingMinutes(entry.body);
     text-wrap: balance;
   }
 
+  @media (prefers-reduced-motion: no-preference) {
+    .entry-hero .page-kicker,
+    .entry-hero .article-mark,
+    .entry-hero h1,
+    .entry-hero .tag-row {
+      animation: journal-hero-reveal 480ms cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    .entry-hero .article-mark {
+      animation-delay: 70ms;
+      animation-name: journal-mark-reveal;
+    }
+
+    .entry-hero h1 {
+      animation-delay: 130ms;
+    }
+
+    .entry-hero .tag-row {
+      animation-delay: 190ms;
+    }
+
+    @keyframes journal-hero-reveal {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes journal-mark-reveal {
+      from {
+        opacity: 0;
+        transform: translateY(10px) rotate(-2deg);
+      }
+
+      to {
+        opacity: 1;
+        transform: rotate(-2deg);
+      }
+    }
+  }
+
   .tag-row {
     display: flex;
     flex-wrap: wrap;
@@ -389,7 +443,7 @@ const readingMinutes = getReadingMinutes(entry.body);
     color: var(--clay-dark);
     text-decoration-color: rgba(153, 80, 56, 0.35);
     text-underline-offset: 0.2em;
-    transition: color 160ms ease, text-decoration-color 160ms ease;
+    transition: color var(--motion-fast) var(--ease-standard), text-decoration-color var(--motion-fast) var(--ease-standard);
   }
 
   .journal-prose a:hover {
@@ -401,75 +455,87 @@ const readingMinutes = getReadingMinutes(entry.body);
     color: var(--ink);
   }
 
-  .journal-prose ul,
-  .journal-prose ol {
+  .journal-prose .journal-list {
+    --journal-list-line-height: 1.95em;
     margin: 1.35rem 0;
     padding-left: 0;
   }
 
-  .journal-prose li {
+  .journal-prose .journal-list-item {
+    align-items: start;
+    column-gap: 0.7rem;
+    display: grid;
+    grid-template-columns: 1.45rem minmax(0, 1fr);
     margin: 0.55rem 0;
-    position: relative;
+    min-width: 0;
   }
 
-  .journal-prose ul {
+  .journal-prose .journal-list-unordered,
+  .journal-prose .journal-list-ordered {
     list-style: none;
   }
 
-  .journal-prose ul > li {
-    padding-left: 1.45rem;
+  .journal-prose .journal-list-marker {
+    grid-column: 1;
+    grid-row: 1;
+    justify-self: center;
   }
 
-  .journal-prose ul > li::before {
+  .journal-prose .journal-list-unordered .journal-list-marker {
     background: var(--clay);
     border: 3px solid var(--surface-card);
     border-radius: 50%;
     box-shadow: 0 0 0 1px rgba(202, 112, 72, 0.24);
-    content: '';
     height: 0.62rem;
-    left: 0.08rem;
-    position: absolute;
-    top: 0.72em;
-    transform: translateY(-50%);
+    margin-top: calc((var(--journal-list-line-height) - 0.62rem) / 2);
     width: 0.62rem;
   }
 
-  .journal-prose ol {
+  .journal-prose .journal-list-ordered {
     counter-reset: journal-list;
-    list-style: none;
   }
 
-  .journal-prose ol > li {
+  .journal-prose .journal-list-ordered .journal-list-item {
     counter-increment: journal-list;
-    padding-left: 2.25rem;
   }
 
-  .journal-prose ol > li::before {
+  .journal-prose .journal-list-ordered .journal-list-marker {
     align-items: center;
     background: rgba(202, 112, 72, 0.11);
     border: 1px solid rgba(202, 112, 72, 0.18);
     border-radius: 999px;
     color: var(--clay-dark);
-    content: counter(journal-list);
     display: flex;
     font-family: var(--font-sans);
     font-size: 0.65rem;
     font-weight: 700;
     height: 1.45rem;
     justify-content: center;
-    left: 0;
-    position: absolute;
-    top: 0.26rem;
+    margin-top: calc((var(--journal-list-line-height) - 1.45rem) / 2);
     width: 1.45rem;
   }
 
-  .journal-prose li > p {
-    margin: 0.35rem 0;
+  .journal-prose .journal-list-ordered .journal-list-marker::before {
+    content: counter(journal-list);
+  }
+
+  .journal-prose .journal-list-content {
+    grid-column: 2;
+    grid-row: 1;
+    min-width: 0;
+  }
+
+  .journal-prose .journal-list-content > p {
+    line-height: inherit;
+    margin: 0;
     text-align: left;
   }
 
-  .journal-prose li > ul,
-  .journal-prose li > ol {
+  .journal-prose .journal-list-content > p + p {
+    margin-top: 0.55rem;
+  }
+
+  .journal-prose .journal-list-content > .journal-list {
     border-left: 1px solid var(--line);
     margin: 0.7rem 0 0.8rem 0.2rem;
     padding-left: 1rem;
@@ -558,7 +624,7 @@ const readingMinutes = getReadingMinutes(entry.body);
     margin: 0;
     min-height: 3.2rem;
     padding: 0.85rem 2.8rem 0.85rem 3.4rem;
-    transition: background-color 160ms ease, border-color 160ms ease, transform 160ms ease;
+    transition: background-color var(--motion-fast) var(--ease-standard), border-color var(--motion-fast) var(--ease-standard), transform var(--motion-fast) var(--ease-standard);
   }
 
   .journal-prose .journal-references > li:hover {
@@ -858,16 +924,11 @@ const readingMinutes = getReadingMinutes(entry.body);
       text-align: left;
     }
 
-    .journal-prose ul > li {
-      padding-left: 1.3rem;
+    .journal-prose .journal-list {
+      --journal-list-line-height: 1.88em;
     }
 
-    .journal-prose ol > li {
-      padding-left: 2rem;
-    }
-
-    .journal-prose li > ul,
-    .journal-prose li > ol {
+    .journal-prose .journal-list-content > .journal-list {
       padding-left: 0.65rem;
     }
 
@@ -962,7 +1023,10 @@ const readingMinutes = getReadingMinutes(entry.body);
 
     const link = document.createElement('a');
     link.href = `#${heading.id}`;
-    link.textContent = (heading.textContent ?? '').trim();
+    const label = document.createElement('span');
+    label.className = 'toc-item-label';
+    label.textContent = (heading.textContent ?? '').trim();
+    link.append(label);
     item.append(link);
     return item;
   }

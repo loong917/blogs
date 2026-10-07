@@ -50,7 +50,7 @@ const { title, active } = Astro.props;
     display: flex;
     gap: 0.75rem;
     text-decoration: none;
-    transition: opacity 160ms ease;
+    transition: opacity var(--motion-fast) var(--ease-standard);
   }
 
   .brand:hover {
@@ -104,7 +104,7 @@ const { title, active } = Astro.props;
     padding: 0.65rem 0.9rem;
     position: relative;
     text-decoration: none;
-    transition: background-color 160ms ease, color 160ms ease;
+    transition: background-color var(--motion-fast) var(--ease-standard), color var(--motion-fast) var(--ease-standard);
   }
 
   nav a:hover,
@@ -136,7 +136,7 @@ const { title, active } = Astro.props;
     height: 2.45rem;
     justify-content: center;
     margin-left: 0.25rem;
-    transition: background-color 160ms ease, color 160ms ease, transform 160ms ease;
+    transition: background-color var(--motion-fast) var(--ease-standard), color var(--motion-fast) var(--ease-standard), transform var(--motion-fast) var(--ease-standard);
     width: 2.45rem;
   }
 

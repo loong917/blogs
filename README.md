@@ -78,7 +78,7 @@ summary: 可选摘要，用于列表和页面 SEO 描述
 `src/plugins/rehype-journal.mjs` 在构建阶段处理 Markdown HTML，不向浏览器注入额外运行时代码。当前正文样式覆盖：
 
 - 多级标题与段落层级
-- 有序列表、无序列表和任务列表
+- 有序列表、无序列表和任务列表（构建阶段生成独立标记与内容结构，保证多行、嵌套内容对齐）
 - 行内代码与代码块
 - 引用、提示块和分隔线
 - 响应式表格与图片
@@ -88,6 +88,12 @@ summary: 可选摘要，用于列表和页面 SEO 描述
 
 调整 Markdown 结构识别时修改 Rehype 插件；调整视觉表现时修改 `src/pages/blog/[...slug].astro` 中的 `.journal-prose` 样式。
 
+## 设计维护规则
+
+- 全局色彩、圆角、阴影、间距和动效时长统一定义在 `src/layouts/Layout.astro` 的 CSS 自定义属性中；组件应复用令牌而非新增硬编码值。
+- 列表、参考文献、代码块和图片等 Markdown 结构由 `src/plugins/rehype-journal.mjs` 生成语义类名；新增正文样式优先扩展该结构。
+- 交互动效保持短促并只服务于状态变化；所有持续或入场动效必须尊重 `prefers-reduced-motion`。
+
 ## 页面过渡
 
 全局路由器由 `src/layouts/Layout.astro` 中的 `<ViewTransitions />` 启用：
@@ -96,6 +102,7 @@ summary: 可选摘要，用于列表和页面 SEO 描述
 - 站点品牌通过 `site-brand` 在页面间连续过渡
 - 文章卡片标题和图标使用文章 `id` 生成唯一过渡名称
 - 从列表进入详情时，标题与图标平滑衔接到文章头部
+- 文章详情页以分层淡入呈现阅读信息、图标、标题与标签；目录卡片提供轻量悬停与当前章节反馈
 - 浏览器不支持 View Transitions 时使用 Astro 的动画回退
 - 系统开启“减少动态效果”时自动将动画缩短至接近即时完成
 
